@@ -34,7 +34,7 @@ $hasDiscount = $car['discount'] > 0;
 // Parse specifications if they exist
 $specifications = [
     'gear_box' => 'Automat',
-    'fuel' => '95',
+    'fuel' => 'Petrol',
     'doors' => '4',
     'air_conditioner' => 'Yes',
     'seats' => '5',
@@ -76,7 +76,7 @@ $conn->close();
         <div class="col-lg-6 mb-4">
             <div class="position-relative mb-3">
                 <?php if ($hasDiscount): ?>
-                    <span class="discount-badge"><?php echo $car['discount']; ?>% OFF</span>
+                    <span class="discount-badge"><?php echo formatDiscount($car['discount']); ?>% OFF</span>
                 <?php endif; ?>
                 <img src="<?php echo htmlspecialchars($car['image']); ?>" 
                      class="img-fluid rounded" 
@@ -297,7 +297,7 @@ $conn->close();
                         <div class="car-card <?php echo $otherHasDiscount ? 'has-discount' : ''; ?>">
                             <div class="position-relative">
                                 <?php if ($otherHasDiscount): ?>
-                                    <span class="discount-badge"><?php echo $otherCar['discount']; ?>% OFF</span>
+                                    <span class="discount-badge"><?php echo formatDiscount($otherCar['discount']); ?>% OFF</span>
                                 <?php endif; ?>
                                 <img src="<?php echo htmlspecialchars($otherCar['image']); ?>" 
                                      class="car-image" 
@@ -322,7 +322,7 @@ $conn->close();
                                     <div class="car-feature">
                                         <i class="bi bi-gear-fill"></i>
                                         <span><?php 
-                                            $otherSpecs = ['gear_box' => 'Automat', 'fuel' => '95', 'air_conditioner' => 'Yes'];
+                                            $otherSpecs = ['gear_box' => 'Automat', 'fuel' => 'Petrol', 'air_conditioner' => 'Yes'];
                                             if (!empty($otherCar['specifications'])) {
                                                 $otherCarSpecs = json_decode($otherCar['specifications'], true);
                                                 if (is_array($otherCarSpecs)) {

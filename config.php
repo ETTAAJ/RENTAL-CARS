@@ -92,6 +92,14 @@ function formatPrice($price) {
     return rtrim(rtrim($formatted, '0'), '.');
 }
 
+// Helper function to format discount percentage
+function formatDiscount($discount) {
+    // Format with 2 decimals, then remove trailing zeros
+    $formatted = number_format($discount, 2, '.', '');
+    // Remove trailing zeros and decimal point if not needed
+    return rtrim(rtrim($formatted, '0'), '.');
+}
+
 // Helper function to convert price from MAD to another currency
 function convertPrice($priceMAD, $toCurrency = 'MAD') {
     if ($toCurrency === 'MAD' || !isset(EXCHANGE_RATES[$toCurrency])) {

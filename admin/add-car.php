@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get specifications
     $specifications = [
         'gear_box' => trim($_POST['gear_box'] ?? 'Automat'),
-        'fuel' => trim($_POST['fuel'] ?? '95'),
+        'fuel' => trim($_POST['fuel'] ?? 'Petrol'),
         'doors' => trim($_POST['doors'] ?? '4'),
         'air_conditioner' => trim($_POST['air_conditioner'] ?? 'Yes'),
         'seats' => trim($_POST['seats'] ?? '5'),
@@ -65,10 +65,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($file['size'] > $maxSize) {
             $errorMessage = 'File size too large. Maximum size is 5MB.';
         } else {
-            // Generate unique filename
+            // Generate filename based on car name
             $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-            $filename = 'car_' . time() . '_' . uniqid() . '.' . $extension;
+            // Sanitize car name for filename (remove special characters, replace spaces with hyphens)
+            $sanitizedName = preg_replace('/[^a-zA-Z0-9\-_]/', '', str_replace(' ', '-', $name));
+            $sanitizedName = strtolower($sanitizedName);
+            // If name is empty after sanitization, use fallback
+            if (empty($sanitizedName)) {
+                $sanitizedName = 'car-' . time();
+            }
+            $filename = $sanitizedName . '.' . $extension;
             $uploadPath = $uploadDir . $filename;
+            
+            // If file already exists, add timestamp to make it unique
+            if (file_exists($uploadPath)) {
+                $filename = $sanitizedName . '-' . time() . '.' . $extension;
+                $uploadPath = $uploadDir . $filename;
+            }
             
             if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
                 $imagePath = 'assets/images/' . $filename;
@@ -192,9 +205,11 @@ $conn->close();
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="fuel" class="form-label">Fuel</label>
-                            <input type="text" class="form-control" id="fuel" name="fuel" 
-                                   value="<?php echo htmlspecialchars($_POST['fuel'] ?? '95'); ?>"
-                                   placeholder="95">
+                            <select class="form-select" id="fuel" name="fuel">
+                                <option value="Petrol" <?php echo (($_POST['fuel'] ?? 'Petrol') === 'Petrol') ? 'selected' : ''; ?>>Petrol</option>
+                                <option value="Diesel" <?php echo (($_POST['fuel'] ?? '') === 'Diesel') ? 'selected' : ''; ?>>Diesel</option>
+                                <option value="Hybrid" <?php echo (($_POST['fuel'] ?? '') === 'Hybrid') ? 'selected' : ''; ?>>Hybrid</option>
+                            </select>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="doors" class="form-label">Doors</label>
