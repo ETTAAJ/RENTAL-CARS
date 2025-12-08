@@ -241,6 +241,77 @@
         .footer-copyright {
             color: var(--muted);
         }
+        
+        /* Floating WhatsApp Button */
+        .floating-phone-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+            font-size: 1.8rem;
+        }
+        
+        .floating-phone-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.6);
+            color: white;
+        }
+        
+        .floating-phone-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .floating-phone-btn .phone-pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(37, 211, 102, 0.4);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+        
+        .floating-phone-btn i {
+            position: relative;
+            z-index: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .floating-phone-btn {
+                bottom: 20px;
+                right: 20px;
+                width: 55px;
+                height: 55px;
+                font-size: 1.6rem;
+            }
+        }
+        
+        /* Hide on admin pages */
+        body.admin-page .floating-phone-btn {
+            display: none;
+        }
     </style>
     
     <footer class="site-footer">
@@ -266,7 +337,11 @@
                 </div>
                 <div class="col-md-4 mb-4">
                     <h5 style="font-weight: 700; margin-bottom: 1rem; color: var(--primary);">Contact Info</h5>
-                    <p class="footer-text" style="margin-bottom: 0.5rem;"><i class="bi bi-telephone-fill" style="color: var(--primary-orange); margin-right: 0.5rem;"></i> +996 247-1680</p>
+                    <?php
+                    require_once 'config.php';
+                    $formatted_phone = getFormattedPhoneNumber();
+                    ?>
+                    <p class="footer-text" style="margin-bottom: 0.5rem;"><i class="bi bi-telephone-fill" style="color: var(--primary-orange); margin-right: 0.5rem;"></i> <?php echo htmlspecialchars($formatted_phone); ?></p>
                     <p class="footer-text" style="margin-bottom: 0.5rem;"><i class="bi bi-envelope-fill" style="color: var(--primary-orange); margin-right: 0.5rem;"></i> info@carrental.com</p>
                     <p class="footer-text"><i class="bi bi-geo-alt-fill" style="color: var(--primary-orange); margin-right: 0.5rem;"></i> Oxford Ave. Cary, NC 27511</p>
                 </div>
@@ -319,6 +394,25 @@
             </div>
         </div>
     </footer>
+    
+    <?php
+    // Check if we're in admin panel
+    $isAdmin = (strpos($_SERVER['PHP_SELF'], '/admin/') !== false);
+    
+    if (!$isAdmin) {
+        // Get WhatsApp number
+        require_once 'config.php';
+        $whatsapp_number = WHATSAPP_NUMBER;
+        $wa_link = "https://wa.me/" . $whatsapp_number;
+        $phone_link = "tel:+" . $whatsapp_number;
+    ?>
+    <!-- Floating WhatsApp Button -->
+    <a href="<?php echo $wa_link; ?>" target="_blank" class="floating-phone-btn" title="Contact us on WhatsApp">
+        <div class="phone-pulse"></div>
+        <i class="bi bi-whatsapp"></i>
+    </a>
+    <?php } ?>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

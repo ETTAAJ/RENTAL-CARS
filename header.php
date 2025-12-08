@@ -1028,7 +1028,7 @@
     <?php
     // WhatsApp configuration
     $whatsapp_number = WHATSAPP_NUMBER;
-    $formatted_number = "+996 247-1680";
+    $formatted_number = getFormattedPhoneNumber();
     $wa_link = "https://wa.me/" . $whatsapp_number;
     
     // Get logo path from database
@@ -1072,7 +1072,7 @@
                 <a href="about-us.php" class="nav-link" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: 8px; text-decoration: none; color: var(--primary); transition: all 0.3s;" onmouseover="this.style.background='var(--hover-bg)'; this.style.color='var(--primary-purple)'" onmouseout="this.style.background='transparent'; this.style.color='var(--primary)'">
                     <i class="bi bi-info-circle"></i> <span>About Us</span>
                 </a>
-                <a href="#contact" class="nav-link" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: 8px; text-decoration: none; color: var(--primary); transition: all 0.3s;" onmouseover="this.style.background='var(--hover-bg)'; this.style.color='var(--primary-purple)'" onmouseout="this.style.background='transparent'; this.style.color='var(--primary)'">
+                <a href="contact.php" class="nav-link" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: 8px; text-decoration: none; color: var(--primary); transition: all 0.3s;" onmouseover="this.style.background='var(--hover-bg)'; this.style.color='var(--primary-purple)'" onmouseout="this.style.background='transparent'; this.style.color='var(--primary)'">
                     <i class="bi bi-envelope"></i> <span>Contact Us</span>
                 </a>
             </nav>
@@ -1147,7 +1147,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#contact" class="nav-link-top">
+                    <a href="contact.php" class="nav-link-top <?php echo (basename($_SERVER['PHP_SELF']) == 'contact.php') ? 'active' : ''; ?>">
                         Contact Us
                     </a>
                 </li>
@@ -1242,7 +1242,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#contact">
+                <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'contact.php') ? 'active' : ''; ?>" href="contact.php">
                     <i class="bi bi-envelope"></i>
                     <span>Contact Us</span>
                 </a>
@@ -1260,7 +1260,7 @@
                 <i class="bi bi-telephone-fill"></i>
                 <div>
                     <div style="font-size: 0.85rem; color: #636E72;">Need help?</div>
-                    <div style="font-weight: 600; font-size: 0.95rem;">+996 247-1680</div>
+                    <div style="font-weight: 600; font-size: 0.95rem;"><?php echo htmlspecialchars($formatted_number); ?></div>
                 </div>
             </div>
         </div>

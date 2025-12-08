@@ -31,6 +31,35 @@ function getWhatsAppNumber() {
 
 define('WHATSAPP_NUMBER', getWhatsAppNumber());
 
+// Format WhatsApp number for display (adds + and formatting)
+function getFormattedPhoneNumber() {
+    $number = WHATSAPP_NUMBER;
+    // Remove any non-digit characters
+    $number = preg_replace('/\D/', '', $number);
+    
+    // Format based on length
+    if (strlen($number) >= 10) {
+        // Format: +212 653-330752 (Morocco format) or similar
+        if (strlen($number) == 12 && substr($number, 0, 3) == '212') {
+            // Morocco: +212 653-330752
+            return '+' . substr($number, 0, 3) . ' ' . substr($number, 3, 3) . '-' . substr($number, 6);
+        } elseif (strlen($number) == 12 && substr($number, 0, 3) == '996') {
+            // Kyrgyzstan: +996 247-1680
+            return '+' . substr($number, 0, 3) . ' ' . substr($number, 3, 3) . '-' . substr($number, 6);
+        } else {
+            // Default formatting: +XX XXX-XXXXXX
+            $countryCode = substr($number, 0, strlen($number) - 9);
+            $rest = substr($number, strlen($countryCode));
+            if (strlen($rest) >= 6) {
+                return '+' . $countryCode . ' ' . substr($rest, 0, 3) . '-' . substr($rest, 3);
+            }
+        }
+    }
+    
+    // Fallback: just add +
+    return '+' . $number;
+}
+
 // Create database connection
 function getDBConnection() {
     try {
