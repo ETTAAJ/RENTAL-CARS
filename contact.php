@@ -120,18 +120,18 @@ $whatsappNumber = WHATSAPP_NUMBER;
                     </div>
                     
                     <!-- Additional Contact Info -->
-                    <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+                    <div class="business-hours-section" style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border);">
                         <h5 style="font-weight: 700; color: var(--dark-text); margin-bottom: 1rem;">Business Hours</h5>
                         <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                            <div style="display: flex; justify-content: space-between; color: var(--muted);">
+                            <div class="business-hour-row" style="display: flex; justify-content: space-between; color: var(--muted);">
                                 <span>Monday - Friday</span>
                                 <span style="font-weight: 600; color: var(--dark-text);">9:00 AM - 6:00 PM</span>
                             </div>
-                            <div style="display: flex; justify-content: space-between; color: var(--muted);">
+                            <div class="business-hour-row" style="display: flex; justify-content: space-between; color: var(--muted);">
                                 <span>Saturday</span>
                                 <span style="font-weight: 600; color: var(--dark-text);">10:00 AM - 4:00 PM</span>
                             </div>
-                            <div style="display: flex; justify-content: space-between; color: var(--muted);">
+                            <div class="business-hour-row" style="display: flex; justify-content: space-between; color: var(--muted);">
                                 <span>Sunday</span>
                                 <span style="font-weight: 600; color: var(--dark-text);">Closed</span>
                             </div>
@@ -161,6 +161,236 @@ $whatsappNumber = WHATSAPP_NUMBER;
         </div>
     </div>
 </div>
+
+<style>
+    /* Mobile Responsive Styles for Contact Page */
+    @media (max-width: 768px) {
+        /* Container padding */
+        .container {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        
+        /* Section title */
+        .section-title {
+            font-size: 1.75rem !important;
+            margin-bottom: 2rem !important;
+        }
+        
+        /* Section padding */
+        .py-5 {
+            padding-top: 2rem !important;
+            padding-bottom: 2rem !important;
+        }
+        
+        /* Contact info cards */
+        .row.mb-5 > div[class*="col-"] > div {
+            padding: 1.25rem !important;
+        }
+        
+        .row.mb-5 > div[class*="col-"] > div > div[style*="width: 60px"] {
+            width: 50px !important;
+            height: 50px !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .row.mb-5 > div[class*="col-"] > div > div[style*="width: 60px"] i {
+            font-size: 1.4rem !important;
+        }
+        
+        .row.mb-5 > div[class*="col-"] > div h4 {
+            font-size: 1.1rem !important;
+            margin-bottom: 0.75rem !important;
+        }
+        
+        .row.mb-5 > div[class*="col-"] > div p {
+            font-size: 0.9rem !important;
+        }
+        
+        /* Contact form card */
+        .col-lg-6:first-child > div {
+            padding: 1.5rem !important;
+            border-radius: 16px !important;
+        }
+        
+        .col-lg-6:first-child > div h3 {
+            font-size: 1.5rem !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .col-lg-6:first-child > div > p {
+            font-size: 0.95rem !important;
+            margin-bottom: 1.5rem !important;
+        }
+        
+        /* Form inputs */
+        .form-control, .form-select {
+            padding: 0.65rem !important;
+            font-size: 0.95rem !important;
+        }
+        
+        .form-label {
+            font-size: 0.9rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+        
+        /* Form button */
+        .btn-purple {
+            padding: 0.875rem !important;
+            font-size: 1rem !important;
+        }
+        
+        /* Map section card */
+        .col-lg-6:last-child > div {
+            padding: 1.5rem !important;
+            border-radius: 16px !important;
+        }
+        
+        .col-lg-6:last-child > div h3 {
+            font-size: 1.5rem !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .col-lg-6:last-child > div > p {
+            font-size: 0.95rem !important;
+            margin-bottom: 1.5rem !important;
+        }
+        
+        /* Map container */
+        .col-lg-6:last-child > div > div[style*="height: 400px"] {
+            height: 300px !important;
+            border-radius: 12px !important;
+        }
+        
+        /* Business hours section */
+        .col-lg-6:last-child > div > div[style*="margin-top: 2rem"] {
+            margin-top: 1.5rem !important;
+            padding-top: 1.5rem !important;
+        }
+        
+        .col-lg-6:last-child > div > div[style*="margin-top: 2rem"] h5 {
+            font-size: 1rem !important;
+            margin-bottom: 0.75rem !important;
+        }
+        
+        .col-lg-6:last-child > div > div[style*="margin-top: 2rem"] > div > div {
+            font-size: 0.9rem !important;
+        }
+        
+        /* Business hours rows - stack on mobile */
+        .business-hour-row {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.25rem !important;
+        }
+        
+        .business-hour-row > span:last-child {
+            margin-left: 0 !important;
+        }
+        
+        /* Quick contact section */
+        .row.mt-5 > div > div {
+            padding: 1.75rem 1.25rem !important;
+            border-radius: 16px !important;
+        }
+        
+        .row.mt-5 > div > div h3 {
+            font-size: 1.5rem !important;
+            margin-bottom: 0.75rem !important;
+        }
+        
+        .row.mt-5 > div > div > p {
+            font-size: 1rem !important;
+            margin-bottom: 1.5rem !important;
+        }
+        
+        .row.mt-5 > div > div > a.btn {
+            padding: 0.875rem 1.5rem !important;
+            font-size: 1rem !important;
+            width: 100% !important;
+            justify-content: center !important;
+        }
+        
+        .row.mt-5 > div > div > a.btn i {
+            font-size: 1.3rem !important;
+        }
+        
+        /* Breadcrumb */
+        .breadcrumb {
+            font-size: 0.85rem !important;
+            margin-bottom: 1.5rem !important;
+        }
+        
+        /* Margin adjustments */
+        .mb-5 {
+            margin-bottom: 2rem !important;
+        }
+        
+        .mt-5 {
+            margin-top: 2rem !important;
+        }
+    }
+    
+    /* Extra small devices (phones in portrait) */
+    @media (max-width: 576px) {
+        /* Section title */
+        .section-title {
+            font-size: 1.5rem !important;
+        }
+        
+        /* Contact info cards */
+        .row.mb-5 > div[class*="col-"] > div {
+            padding: 1rem !important;
+        }
+        
+        .row.mb-5 > div[class*="col-"] > div > div[style*="width: 60px"] {
+            width: 45px !important;
+            height: 45px !important;
+        }
+        
+        .row.mb-5 > div[class*="col-"] > div > div[style*="width: 60px"] i {
+            font-size: 1.2rem !important;
+        }
+        
+        .row.mb-5 > div[class*="col-"] > div h4 {
+            font-size: 1rem !important;
+        }
+        
+        /* Form and map cards */
+        .col-lg-6 > div {
+            padding: 1.25rem !important;
+        }
+        
+        .col-lg-6 > div h3 {
+            font-size: 1.35rem !important;
+        }
+        
+        /* Map height */
+        .col-lg-6:last-child > div > div[style*="height: 400px"] {
+            height: 250px !important;
+        }
+        
+        /* Quick contact section */
+        .row.mt-5 > div > div {
+            padding: 1.5rem 1rem !important;
+        }
+        
+        .row.mt-5 > div > div h3 {
+            font-size: 1.35rem !important;
+        }
+        
+        .row.mt-5 > div > div > p {
+            font-size: 0.95rem !important;
+        }
+    }
+    
+    /* Landscape orientation on mobile */
+    @media (max-width: 768px) and (orientation: landscape) {
+        .col-lg-6:last-child > div > div[style*="height: 400px"] {
+            height: 250px !important;
+        }
+    }
+</style>
 
 <script>
 // Function to send contact form data to WhatsApp
