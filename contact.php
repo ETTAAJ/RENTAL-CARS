@@ -6,390 +6,560 @@ include 'header.php';
 
 // WhatsApp number for contact
 $whatsappNumber = WHATSAPP_NUMBER;
+$formattedPhone = getFormattedPhoneNumber();
 ?>
 
-<div class="container">
-    <!-- Breadcrumb -->
-    <nav aria-label="breadcrumb" class="mb-4" style="--bs-breadcrumb-divider: ' / ';">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Contact Us</li>
-        </ol>
-    </nav>
-
-    <!-- Contact Us Section -->
-    <div class="py-5">
-        <h2 class="section-title">Contact Us</h2>
-        
-        <!-- Contact Information Cards -->
-        <div class="row mb-5">
-            <div class="col-md-6 mb-4">
-                <div style="padding: 2rem; background: var(--card); border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); height: 100%; border: 1px solid var(--border); text-align: center;">
-                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary-purple), var(--primary-orange)); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
-                        <i class="bi bi-geo-alt-fill" style="font-size: 1.8rem; color: white;"></i>
-                    </div>
-                    <h4 style="font-weight: 700; color: var(--dark-text); margin-bottom: 1rem; font-size: 1.3rem;">Our Location</h4>
-                    <p style="color: var(--muted); line-height: 1.8; margin: 0;">Oxford Ave. Cary, NC 27511</p>
-                </div>
-            </div>
-            <div class="col-md-6 mb-4">
-                <div style="padding: 2rem; background: var(--card); border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); height: 100%; border: 1px solid var(--border); text-align: center;">
-                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary-purple), var(--primary-orange)); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
-                        <i class="bi bi-envelope-fill" style="font-size: 1.8rem; color: white;"></i>
-                    </div>
-                    <h4 style="font-weight: 700; color: var(--dark-text); margin-bottom: 1rem; font-size: 1.3rem;">Email Address</h4>
-                    <p style="color: var(--muted); line-height: 1.8; margin: 0;">info@carrental.com</p>
-                </div>
-            </div>
+<div class="contact-page">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="contact-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Contact</li>
+                </ol>
+            </nav>
         </div>
 
-        <!-- Contact Form and Map Section -->
-        <div class="row">
-            <!-- Contact Form -->
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <div style="padding: 2.5rem; background: var(--card); border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 1px solid var(--border);">
-                    <h3 style="font-size: 2rem; font-weight: 800; color: var(--dark-text); margin-bottom: 1.5rem;">Get In Touch</h3>
-                    <p style="color: var(--muted); line-height: 1.8; margin-bottom: 2rem;">
-                        Have a question or need assistance? Fill out the form below and we'll get back to you as soon as possible.
-                    </p>
-                    
-                    <form id="contactForm" onsubmit="sendContactToWhatsApp(event);">
-                        <div class="mb-3">
-                            <label for="contact_name" class="form-label" style="font-weight: 600; color: var(--dark-text);">Full Name *</label>
-                            <input type="text" class="form-control" id="contact_name" name="name" required 
-                                   style="padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--dark-text);">
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="contact_email" class="form-label" style="font-weight: 600; color: var(--dark-text);">Email Address *</label>
-                            <input type="email" class="form-control" id="contact_email" name="email" required 
-                                   style="padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--dark-text);">
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="contact_phone" class="form-label" style="font-weight: 600; color: var(--dark-text);">Phone Number *</label>
-                            <input type="tel" class="form-control" id="contact_phone" name="phone" required 
-                                   style="padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--dark-text);">
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="contact_subject" class="form-label" style="font-weight: 600; color: var(--dark-text);">Subject *</label>
-                            <select class="form-select" id="contact_subject" name="subject" required 
-                                    style="padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--dark-text);">
-                                <option value="">Select a subject</option>
-                                <option value="General Inquiry">General Inquiry</option>
-                                <option value="Booking Question">Booking Question</option>
-                                <option value="Technical Support">Technical Support</option>
-                                <option value="Feedback">Feedback</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="contact_message" class="form-label" style="font-weight: 600; color: var(--dark-text);">Message *</label>
-                            <textarea class="form-control" id="contact_message" name="message" rows="5" required 
-                                      style="padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--dark-text); resize: vertical;"></textarea>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-purple w-100" style="padding: 1rem; font-size: 1.1rem; font-weight: 600;">
-                            <i class="bi bi-whatsapp"></i> Send via WhatsApp
-                        </button>
-                    </form>
-                </div>
+        <!-- Contact Form Section - Mobile First -->
+        <div class="contact-form-card">
+            <div class="form-header">
+                <h2>Send Us a Message</h2>
+                <div class="header-accent"></div>
+                <p>Fill out the form and we'll respond within minutes</p>
             </div>
             
-            <!-- Map Section -->
-            <div class="col-lg-6">
-                <div style="padding: 2.5rem; background: var(--card); border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 1px solid var(--border); height: 100%;">
-                    <h3 style="font-size: 2rem; font-weight: 800; color: var(--dark-text); margin-bottom: 1.5rem;">Find Us</h3>
-                    <p style="color: var(--muted); line-height: 1.8; margin-bottom: 2rem;">
-                        Visit our office or reach out to us through any of the contact methods above.
-                    </p>
-                    
-                    <!-- Map Placeholder -->
-                    <div style="width: 100%; height: 400px; background: var(--bg); border-radius: 16px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); position: relative; overflow: hidden;">
-                        <iframe 
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3238.5!2d-78.8!3d35.7!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzXCsDQyJzAwLjAiTiA3OMKwNDgnMDAuMCJX!5e0!3m2!1sen!2sus!4v1234567890" 
-                            width="100%" 
-                            height="100%" 
-                            style="border:0; border-radius: 16px;" 
-                            allowfullscreen="" 
-                            loading="lazy" 
-                            referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
-                    </div>
-                    
-                    <!-- Additional Contact Info -->
-                    <div class="business-hours-section" style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border);">
-                        <h5 style="font-weight: 700; color: var(--dark-text); margin-bottom: 1rem;">Business Hours</h5>
-                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                            <div class="business-hour-row" style="display: flex; justify-content: space-between; color: var(--muted);">
-                                <span>Monday - Friday</span>
-                                <span style="font-weight: 600; color: var(--dark-text);">9:00 AM - 6:00 PM</span>
-                            </div>
-                            <div class="business-hour-row" style="display: flex; justify-content: space-between; color: var(--muted);">
-                                <span>Saturday</span>
-                                <span style="font-weight: 600; color: var(--dark-text);">10:00 AM - 4:00 PM</span>
-                            </div>
-                            <div class="business-hour-row" style="display: flex; justify-content: space-between; color: var(--muted);">
-                                <span>Sunday</span>
-                                <span style="font-weight: 600; color: var(--dark-text);">Closed</span>
-                            </div>
-                        </div>
-                    </div>
+            <form id="contactForm" onsubmit="sendContactToWhatsApp(event);">
+                <div class="form-group">
+                    <label for="contact_name">Your Name</label>
+                    <input type="text" class="form-input" id="contact_name" name="name" placeholder="Enter your full name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contact_email">Your Email</label>
+                    <input type="email" class="form-input" id="contact_email" name="email" placeholder="Enter your email address" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contact_message">Your Message</label>
+                    <textarea class="form-input form-textarea" id="contact_message" name="message" placeholder="How can we help you?" rows="5" required></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <span>Send Message</span>
+                    <i class="bi bi-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- Contact Info Cards -->
+        <div class="contact-info-grid">
+            <!-- Phone & WhatsApp -->
+            <a href="https://wa.me/<?php echo $whatsappNumber; ?>" target="_blank" class="info-card">
+                <div class="info-icon">
+                    <i class="bi bi-telephone-fill"></i>
+                </div>
+                <div class="info-content">
+                    <h4>Phone & WhatsApp (24/7)</h4>
+                    <p class="info-highlight"><?php echo $formattedPhone; ?></p>
+                </div>
+            </a>
+
+            <!-- Email -->
+            <a href="mailto:contact@rentalcars.com" class="info-card">
+                <div class="info-icon">
+                    <i class="bi bi-envelope-fill"></i>
+                </div>
+                <div class="info-content">
+                    <h4>Email</h4>
+                    <p class="info-highlight">contact@rentalcars.com</p>
+                </div>
+            </a>
+
+            <!-- Operating Hours -->
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="bi bi-clock-fill"></i>
+                </div>
+                <div class="info-content">
+                    <h4>Operating Hours</h4>
+                    <p class="info-highlight">24/7 - Always Available</p>
                 </div>
             </div>
         </div>
 
-        <!-- Quick Contact Section -->
-        <div class="row mt-5">
-            <div class="col-12">
-                <div style="padding: 2.5rem; background: linear-gradient(135deg, var(--primary-purple), var(--primary-orange)); border-radius: 20px; text-align: center; color: white;">
-                    <h3 style="font-size: 2rem; font-weight: 800; margin-bottom: 1rem; color: white;">Need Immediate Assistance?</h3>
-                    <p style="font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.95;">
-                        Contact us directly via WhatsApp for instant support
-                    </p>
-                    <a href="https://wa.me/<?php echo $whatsappNumber; ?>" target="_blank" class="btn" 
-                       style="background: white; color: var(--primary-purple); padding: 1rem 2.5rem; border-radius: 8px; font-weight: 700; font-size: 1.1rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: transform 0.3s;"
-                       onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.2)'"
-                       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                        <i class="bi bi-whatsapp" style="font-size: 1.5rem;"></i>
-                        Chat on WhatsApp
-                    </a>
-                </div>
+        <!-- Follow Us Section -->
+        <div class="social-section">
+            <h3>Follow Us</h3>
+            <div class="social-icons">
+                <a href="#" class="social-icon instagram" aria-label="Instagram">
+                    <i class="bi bi-instagram"></i>
+                </a>
+                <a href="#" class="social-icon facebook" aria-label="Facebook">
+                    <i class="bi bi-facebook"></i>
+                </a>
+                <a href="https://wa.me/<?php echo $whatsappNumber; ?>" target="_blank" class="social-icon whatsapp" aria-label="WhatsApp">
+                    <i class="bi bi-whatsapp"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Map Section -->
+        <div class="map-section">
+            <h3>Find Us</h3>
+            <div class="map-wrapper">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3238.5!2d-78.8!3d35.7!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzXCsDQyJzAwLjAiTiA3OMKwNDgnMDAuMCJX!5e0!3m2!1sen!2sus!4v1234567890" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
             </div>
         </div>
     </div>
 </div>
 
 <style>
-    /* Mobile Responsive Styles for Contact Page */
-    @media (max-width: 768px) {
-        /* Container padding */
-        .container {
-            padding-left: 1rem;
-            padding-right: 1rem;
-        }
-        
-        /* Section title */
-        .section-title {
-            font-size: 1.75rem !important;
-            margin-bottom: 2rem !important;
-        }
-        
-        /* Section padding */
-        .py-5 {
-            padding-top: 2rem !important;
-            padding-bottom: 2rem !important;
-        }
-        
-        /* Contact info cards */
-        .row.mb-5 > div[class*="col-"] > div {
-            padding: 1.25rem !important;
-        }
-        
-        .row.mb-5 > div[class*="col-"] > div > div[style*="width: 60px"] {
-            width: 50px !important;
-            height: 50px !important;
-            margin-bottom: 1rem !important;
-        }
-        
-        .row.mb-5 > div[class*="col-"] > div > div[style*="width: 60px"] i {
-            font-size: 1.4rem !important;
-        }
-        
-        .row.mb-5 > div[class*="col-"] > div h4 {
-            font-size: 1.1rem !important;
-            margin-bottom: 0.75rem !important;
-        }
-        
-        .row.mb-5 > div[class*="col-"] > div p {
-            font-size: 0.9rem !important;
-        }
-        
-        /* Contact form card */
-        .col-lg-6:first-child > div {
-            padding: 1.5rem !important;
-            border-radius: 16px !important;
-        }
-        
-        .col-lg-6:first-child > div h3 {
-            font-size: 1.5rem !important;
-            margin-bottom: 1rem !important;
-        }
-        
-        .col-lg-6:first-child > div > p {
-            font-size: 0.95rem !important;
-            margin-bottom: 1.5rem !important;
-        }
-        
-        /* Form inputs */
-        .form-control, .form-select {
-            padding: 0.65rem !important;
-            font-size: 0.95rem !important;
-        }
-        
-        .form-label {
-            font-size: 0.9rem !important;
-            margin-bottom: 0.5rem !important;
-        }
-        
-        /* Form button */
-        .btn-purple {
-            padding: 0.875rem !important;
-            font-size: 1rem !important;
-        }
-        
-        /* Map section card */
-        .col-lg-6:last-child > div {
-            padding: 1.5rem !important;
-            border-radius: 16px !important;
-        }
-        
-        .col-lg-6:last-child > div h3 {
-            font-size: 1.5rem !important;
-            margin-bottom: 1rem !important;
-        }
-        
-        .col-lg-6:last-child > div > p {
-            font-size: 0.95rem !important;
-            margin-bottom: 1.5rem !important;
-        }
-        
-        /* Map container */
-        .col-lg-6:last-child > div > div[style*="height: 400px"] {
-            height: 300px !important;
-            border-radius: 12px !important;
-        }
-        
-        /* Business hours section */
-        .col-lg-6:last-child > div > div[style*="margin-top: 2rem"] {
-            margin-top: 1.5rem !important;
-            padding-top: 1.5rem !important;
-        }
-        
-        .col-lg-6:last-child > div > div[style*="margin-top: 2rem"] h5 {
-            font-size: 1rem !important;
-            margin-bottom: 0.75rem !important;
-        }
-        
-        .col-lg-6:last-child > div > div[style*="margin-top: 2rem"] > div > div {
-            font-size: 0.9rem !important;
-        }
-        
-        /* Business hours rows - stack on mobile */
-        .business-hour-row {
-            flex-direction: column !important;
-            align-items: flex-start !important;
-            gap: 0.25rem !important;
-        }
-        
-        .business-hour-row > span:last-child {
-            margin-left: 0 !important;
-        }
-        
-        /* Quick contact section */
-        .row.mt-5 > div > div {
-            padding: 1.75rem 1.25rem !important;
-            border-radius: 16px !important;
-        }
-        
-        .row.mt-5 > div > div h3 {
-            font-size: 1.5rem !important;
-            margin-bottom: 0.75rem !important;
-        }
-        
-        .row.mt-5 > div > div > p {
-            font-size: 1rem !important;
-            margin-bottom: 1.5rem !important;
-        }
-        
-        .row.mt-5 > div > div > a.btn {
-            padding: 0.875rem 1.5rem !important;
-            font-size: 1rem !important;
-            width: 100% !important;
-            justify-content: center !important;
-        }
-        
-        .row.mt-5 > div > div > a.btn i {
-            font-size: 1.3rem !important;
-        }
-        
-        /* Breadcrumb */
-        .breadcrumb {
-            font-size: 0.85rem !important;
-            margin-bottom: 1.5rem !important;
-        }
-        
-        /* Margin adjustments */
-        .mb-5 {
-            margin-bottom: 2rem !important;
-        }
-        
-        .mt-5 {
-            margin-top: 2rem !important;
-        }
+/* Contact Page - Modern Mobile-First Design */
+.contact-page {
+    padding: 1rem 0 3rem;
+    min-height: calc(100vh - 80px);
+}
+
+.contact-page .container {
+    max-width: 600px;
+    padding: 0 1rem;
+}
+
+/* Page Header */
+.contact-header {
+    margin-bottom: 1.5rem;
+}
+
+.contact-header .breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+.contact-header .breadcrumb-item a {
+    color: var(--primary-purple);
+    text-decoration: none;
+}
+
+.contact-header .breadcrumb-item.active {
+    color: var(--muted);
+}
+
+/* Contact Form Card */
+.contact-form-card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.form-header {
+    margin-bottom: 1.75rem;
+}
+
+.form-header h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--dark-text);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+.header-accent {
+    width: 50px;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary-purple), var(--primary-orange));
+    border-radius: 2px;
+    margin-bottom: 0.75rem;
+}
+
+.form-header p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: var(--primary-orange);
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 1rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--dark-text);
+    font-size: 16px; /* Prevents iOS zoom */
+    transition: all 0.3s ease;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.form-input::placeholder {
+    color: var(--muted);
+    opacity: 0.7;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--primary-purple);
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Submit Button */
+.submit-btn {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, var(--primary-orange), #e55a2b);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 107, 53, 0.35);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+.submit-btn i {
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.submit-btn:hover i {
+    transform: translateX(4px);
+}
+
+/* Contact Info Grid */
+.contact-info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Info Card */
+.info-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.25rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.info-card:hover {
+    border-color: var(--primary-orange);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.info-icon {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    background: var(--bg);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.info-icon i {
+    font-size: 1.4rem;
+    color: var(--primary-orange);
+}
+
+.info-content {
+    flex: 1;
+}
+
+.info-content h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--dark-text);
+    margin: 0 0 0.25rem;
+}
+
+.info-highlight {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-orange);
+    margin: 0;
+}
+
+/* Social Section */
+.social-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.social-section h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--dark-text);
+    margin-bottom: 1rem;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.social-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.social-icon i {
+    font-size: 1.5rem;
+    color: white;
+}
+
+.social-icon.instagram {
+    background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+}
+
+.social-icon.facebook {
+    background: #1877f2;
+}
+
+.social-icon.whatsapp {
+    background: #25d366;
+}
+
+.social-icon:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* Map Section */
+.map-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.map-section h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--dark-text);
+    margin-bottom: 1rem;
+}
+
+.map-wrapper {
+    width: 100%;
+    height: 200px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg);
+}
+
+.map-wrapper iframe {
+    width: 100%;
+    height: 100%;
+}
+
+/* Tablet Styles */
+@media (min-width: 768px) {
+    .contact-page .container {
+        max-width: 700px;
+        padding: 0 2rem;
     }
     
-    /* Extra small devices (phones in portrait) */
-    @media (max-width: 576px) {
-        /* Section title */
-        .section-title {
-            font-size: 1.5rem !important;
-        }
-        
-        /* Contact info cards */
-        .row.mb-5 > div[class*="col-"] > div {
-            padding: 1rem !important;
-        }
-        
-        .row.mb-5 > div[class*="col-"] > div > div[style*="width: 60px"] {
-            width: 45px !important;
-            height: 45px !important;
-        }
-        
-        .row.mb-5 > div[class*="col-"] > div > div[style*="width: 60px"] i {
-            font-size: 1.2rem !important;
-        }
-        
-        .row.mb-5 > div[class*="col-"] > div h4 {
-            font-size: 1rem !important;
-        }
-        
-        /* Form and map cards */
-        .col-lg-6 > div {
-            padding: 1.25rem !important;
-        }
-        
-        .col-lg-6 > div h3 {
-            font-size: 1.35rem !important;
-        }
-        
-        /* Map height */
-        .col-lg-6:last-child > div > div[style*="height: 400px"] {
-            height: 250px !important;
-        }
-        
-        /* Quick contact section */
-        .row.mt-5 > div > div {
-            padding: 1.5rem 1rem !important;
-        }
-        
-        .row.mt-5 > div > div h3 {
-            font-size: 1.35rem !important;
-        }
-        
-        .row.mt-5 > div > div > p {
-            font-size: 0.95rem !important;
-        }
+    .contact-form-card {
+        padding: 2.5rem;
     }
     
-    /* Landscape orientation on mobile */
-    @media (max-width: 768px) and (orientation: landscape) {
-        .col-lg-6:last-child > div > div[style*="height: 400px"] {
-            height: 250px !important;
-        }
+    .form-header h2 {
+        font-size: 1.75rem;
     }
+    
+    .contact-info-grid {
+        gap: 1rem;
+    }
+    
+    .info-card {
+        padding: 1.5rem;
+    }
+    
+    .map-wrapper {
+        height: 250px;
+    }
+}
+
+/* Desktop Styles */
+@media (min-width: 992px) {
+    .contact-page {
+        padding: 2rem 0 4rem;
+    }
+    
+    .contact-page .container {
+        max-width: 1100px;
+    }
+    
+    .contact-form-card {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        padding: 3rem;
+    }
+    
+    .form-header {
+        margin-bottom: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .form-header h2 {
+        font-size: 2.25rem;
+    }
+    
+    .form-header p {
+        font-size: 1.05rem;
+    }
+    
+    .contact-info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+    }
+    
+    .info-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem 1.5rem;
+    }
+    
+    .info-icon {
+        margin: 0 auto 1rem;
+        width: 60px;
+        height: 60px;
+    }
+    
+    .info-icon i {
+        font-size: 1.6rem;
+    }
+    
+    .social-section {
+        padding: 2rem;
+    }
+    
+    .social-icons {
+        gap: 1.25rem;
+    }
+    
+    .social-icon {
+        width: 65px;
+        height: 65px;
+    }
+    
+    .social-icon i {
+        font-size: 1.75rem;
+    }
+    
+    .map-section {
+        padding: 2rem;
+    }
+    
+    .map-wrapper {
+        height: 350px;
+    }
+}
+
+/* Large Desktop */
+@media (min-width: 1200px) {
+    .contact-form-card {
+        gap: 4rem;
+        padding: 3.5rem;
+    }
+    
+    .form-header h2 {
+        font-size: 2.5rem;
+    }
+}
+
+/* Dark Mode Adjustments */
+.dark .contact-form-card,
+.dark .info-card,
+.dark .social-section,
+.dark .map-section {
+    background: var(--card);
+    border-color: var(--border);
+}
+
+.dark .form-input {
+    background: rgba(255,255,255,0.05);
+    border-color: var(--border);
+    color: var(--dark-text);
+}
+
+.dark .form-input::placeholder {
+    color: var(--muted);
+}
+
+.dark .info-icon {
+    background: rgba(255,255,255,0.05);
+}
 </style>
 
 <script>
@@ -400,12 +570,10 @@ function sendContactToWhatsApp(event) {
     const form = document.getElementById('contactForm');
     const name = document.getElementById('contact_name').value.trim();
     const email = document.getElementById('contact_email').value.trim();
-    const phone = document.getElementById('contact_phone').value.trim();
-    const subject = document.getElementById('contact_subject').value;
     const message = document.getElementById('contact_message').value.trim();
     
     // Validation
-    if (!name || !email || !phone || !subject || !message) {
+    if (!name || !email || !message) {
         alert('Please fill in all fields.');
         return false;
     }
@@ -418,18 +586,16 @@ function sendContactToWhatsApp(event) {
     }
     
     // Create WhatsApp message
-    const whatsappMessage = `*Contact Form Submission*
+    const whatsappMessage = `*New Contact Message*
 
 *Name:* ${name}
 *Email:* ${email}
-*Phone:* ${phone}
-*Subject:* ${subject}
 
 *Message:*
 ${message}
 
 ---
-This message was sent from the RENTAL CARS website contact form.`;
+Sent from RENTAL CARS website`;
 
     // Encode message for URL
     const encodedMessage = encodeURIComponent(whatsappMessage);
@@ -441,7 +607,7 @@ This message was sent from the RENTAL CARS website contact form.`;
     window.open(whatsappLink, '_blank');
     
     // Show success message
-    alert('Thank you for contacting us! We will get back to you soon.');
+    alert('Thank you! Your message will be sent via WhatsApp.');
     
     // Reset form
     form.reset();
