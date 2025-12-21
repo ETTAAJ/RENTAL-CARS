@@ -101,14 +101,14 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`id`, `setting_key`, `setting_value`, `updated_at`) VALUES
-(1, 'mad_to_eur', '0.092', '2025-12-21 15:27:42'),
-(2, 'mad_to_usd', '0.1', '2025-12-21 15:27:42'),
-(3, 'default_currency', 'MAD', '2025-12-21 15:27:42'),
+(1, 'mad_to_eur', '0.92', '2025-12-21 15:27:42'),
+(2, 'mad_to_usd', '1.0', '2025-12-21 15:27:42'),
+(3, 'default_currency', 'USD', '2025-12-21 15:27:42'),
 (4, 'whatsapp_number', '1234567890', '2025-12-21 15:27:42'),
-(5, 'logo_path', 'assets/images/RENTAL-CARS.png', '2025-12-03 18:45:32'),
+(5, 'logo_path', 'assets/images/logo-placeholder.png', '2025-12-03 18:45:32'),
 (14, 'facebook_url', '', '2025-12-21 15:27:42'),
 (15, 'twitter_url', '', '2025-12-21 15:27:42'),
-(16, 'instagram_url', 'https://www.instagram.com/rentalcars.ettaajluxury/', '2025-12-21 15:27:42'),
+(16, 'instagram_url', '', '2025-12-21 15:27:42'),
 (17, 'linkedin_url', '', '2025-12-21 15:27:42'),
 (18, 'youtube_url', '', '2025-12-21 15:27:42');
 

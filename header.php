@@ -1462,6 +1462,10 @@
     <script>
         // Exchange rates from database (output by PHP)
         window.EXCHANGE_RATES = <?php echo json_encode(EXCHANGE_RATES); ?>;
+        // Currency symbols from database
+        window.CURRENCY_SYMBOLS = <?php echo json_encode($currencySymbols); ?>;
+        // Default currency
+        window.DEFAULT_CURRENCY = <?php echo json_encode($defaultCurrency); ?>;
     </script>
 </head>
 <body>
@@ -1473,6 +1477,43 @@
     
     // Get logo path from database
     $logo_path = getLogoPath();
+    
+    // Load currencies from database
+    $currencies = getCurrencies();
+    $baseCurrency = getBaseCurrency();
+    $defaultCurrency = $baseCurrency;
+    
+    // Try to get default currency from settings
+    try {
+        $conn = getDBConnection();
+        $stmt = $conn->prepare("SELECT setting_value FROM settings WHERE setting_key = 'default_currency'");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($row = $result->fetch_assoc()) {
+            $defaultCurrency = $row['setting_value'];
+        }
+        $stmt->close();
+        $conn->close();
+    } catch (Exception $e) {
+        // Use base currency as fallback
+    }
+    
+    // Build currency symbols object for JavaScript
+    $currencySymbols = [];
+    foreach ($currencies as $curr) {
+        $currencySymbols[$curr['code']] = !empty($curr['symbol']) ? $curr['symbol'] : $curr['code'];
+    }
+    
+    // If no currencies in database, use defaults
+    if (empty($currencies)) {
+        $currencies = [
+            ['code' => 'USD', 'name' => 'US Dollar', 'symbol' => '$'],
+            ['code' => 'EUR', 'name' => 'Euro', 'symbol' => '€'],
+            ['code' => 'GBP', 'name' => 'British Pound', 'symbol' => '£']
+        ];
+        $currencySymbols = ['USD' => '$', 'EUR' => '€', 'GBP' => '£'];
+        $defaultCurrency = 'USD';
+    }
     ?>
     
     <!-- Mobile Sidebar -->
@@ -1521,9 +1562,11 @@
                     <span style="font-size: 0.9rem; color: var(--muted);">Currency</span>
                     <div class="currency-selector" style="min-width: 80px;">
                         <select id="currency-selector-mobile" aria-label="Select Currency" style="width: 100%;">
-                            <option value="MAD">MAD</option>
-                            <option value="EUR">EUR</option>
-                            <option value="USD">USD</option>
+                            <?php foreach ($currencies as $curr): ?>
+                                <option value="<?php echo htmlspecialchars($curr['code']); ?>" <?php echo $defaultCurrency === $curr['code'] ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($curr['code']); ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                 </div>
@@ -1606,9 +1649,11 @@
                 <div style="display: flex; align-items: center; gap: 1rem;">
                     <div class="currency-selector">
                         <select id="currency-selector-desktop" aria-label="Select Currency">
-                            <option value="MAD">MAD</option>
-                            <option value="EUR">EUR</option>
-                            <option value="USD">USD</option>
+                            <?php foreach ($currencies as $curr): ?>
+                                <option value="<?php echo htmlspecialchars($curr['code']); ?>" <?php echo $defaultCurrency === $curr['code'] ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($curr['code']); ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                     <span style="font-size: 0.9rem; color: var(--muted); display: none;">Dark Mode</span>

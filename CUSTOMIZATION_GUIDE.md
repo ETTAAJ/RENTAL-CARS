@@ -69,7 +69,7 @@ This file contains all customizable branding and configuration values:
 | Original Value | New Generic Value | Location |
 |---------------|------------------|----------|
 | "RENTAL CARS" | "Your Company Name" | `/config/app.php` |
-| "212769323828" | "000000000" | `/config/app.php` |
+| "212769323828" | "1234567890" | `/config/app.php` |
 | "info@carrental.com" | "example@email.com" | `/config/app.php` |
 | "Oxford Ave. Cary, NC 27511" | "Your Business Address, City, Country" | `/config/app.php` |
 | "RENTAL-CARS.png" | "logo-placeholder.png" | `/config/app.php` |
@@ -105,9 +105,31 @@ This file contains all customizable branding and configuration values:
    - `site_url` - Full URL to your website
 
 ### Step 4: Configure Currency
-1. In `/config/app.php`, update:
-   - `default_currency` - Your base currency
+
+The system includes a complete Currency Management system accessible from the admin panel.
+
+#### Via Admin Panel (Recommended)
+
+1. Log in to admin panel
+2. Go to **Settings** → **Currency Management**
+3. Click **"Add New Currency"** to add currencies
+4. For each currency, provide:
+   - Currency Code (e.g., USD, EUR, GBP)
+   - Currency Name (e.g., US Dollar, Euro)
+   - Currency Symbol (e.g., $, €, £)
+   - Exchange Rate (relative to base currency)
+5. Set one currency as **Base Currency** (rate will be 1.0)
+6. You can edit, delete, or change the base currency anytime
+
+#### Via Config File (Fallback)
+
+If no currencies exist in the database, the system will use values from `/config/app.php`:
+1. Open `/config/app.php`
+2. Update:
+   - `default_currency` - Your base currency code (e.g., 'USD')
    - `currency_rates` - Exchange rates (base currency should be 1.0)
+
+**Note**: Once currencies are added via admin panel, the database values take precedence over config file values.
 
 ### Step 5: Add Social Media Links
 1. In `/config/app.php`, update the `social_media` array with your social media URLs
@@ -121,9 +143,14 @@ This file contains all customizable branding and configuration values:
 
 1. **Logo File**: Make sure to place your logo file at the path specified in `logo_path` (default: `assets/images/logo-placeholder.png`)
 
-2. **WhatsApp Number**: Format should be country code + number without + or spaces (e.g., "212769323828" for Morocco)
+2. **WhatsApp Number**: Format should be country code + number without + or spaces (e.g., "1234567890")
 
-3. **Currency Rates**: These can also be managed from Admin Panel > Settings, which will override config file values
+3. **Currency Management**: 
+   - Use Admin Panel > Settings > Currency Management for full CRUD operations
+   - Add, edit, delete currencies and set base currency dynamically
+   - Exchange rates are managed per currency
+   - Database values override config file values once currencies are added
+   - The base currency rate is always 1.0 and cannot be changed
 
 4. **Social Media**: Links can also be managed from Admin Panel > Settings
 
@@ -140,7 +167,10 @@ This file contains all customizable branding and configuration values:
 - `car-detail.php`
 - `about-us.php`
 - `admin/login.php`
-- `admin/settings.php`
+- `admin/settings.php` (Currency CRUD system)
+- `admin/index.php` (Dynamic currency display)
+- `admin/add-car.php` (Dynamic currency display)
+- `admin/edit-car.php` (Dynamic currency display)
 - `README.md`
 
 ## Testing Checklist
@@ -152,7 +182,10 @@ After customization, test:
 - [ ] WhatsApp booking functionality works
 - [ ] Footer displays correct information
 - [ ] Admin panel loads correctly
-- [ ] Currency conversion works
+- [ ] Currency Management system works (add, edit, delete, set base)
+- [ ] Currency conversion works on frontend
+- [ ] Base currency displays correctly in admin panel
+- [ ] All prices show correct currency code (not hardcoded)
 - [ ] Social media links work (if configured)
 
 ## Support

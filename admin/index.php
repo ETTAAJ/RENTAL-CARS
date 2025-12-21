@@ -4,6 +4,10 @@ require_once '../config.php';
 $pageTitle = 'Admin Panel - Manage Cars';
 include 'header.php';
 
+// Get base currency and symbol
+$baseCurrency = getBaseCurrency();
+$baseCurrencySymbol = getCurrencySymbol($baseCurrency);
+
 $conn = getDBConnection();
 
 // Handle delete action
@@ -243,15 +247,15 @@ $conn->close();
                             <?php if ($hasDiscount): ?>
                                 <div>
                                     <span style="text-decoration: line-through; color: #95a5a6; font-size: 0.9rem;">
-                                        <?php echo formatPrice($car['price']); ?> MAD
+                                        <?php echo formatPrice($car['price']); ?> <?php echo htmlspecialchars($baseCurrency); ?>
                                     </span>
                                     <span class="ms-2" style="color: #6C5CE7; font-weight: 700; font-size: 1.1rem;">
-                                        <?php echo formatPrice($discountedPrice); ?> MAD
+                                        <?php echo formatPrice($discountedPrice); ?> <?php echo htmlspecialchars($baseCurrency); ?>
                                     </span>
                                 </div>
                             <?php else: ?>
                                 <span style="color: #6C5CE7; font-weight: 700; font-size: 1.1rem;">
-                                    <?php echo formatPrice($car['price']); ?> MAD
+                                    <?php echo formatPrice($car['price']); ?> <?php echo htmlspecialchars($baseCurrency); ?>
                                 </span>
                             <?php endif; ?>
                         </div>
@@ -276,6 +280,9 @@ $conn->close();
 <script>
 // Store all cars data for filtering
 const allCarsData = <?php echo json_encode($allCars); ?>;
+// Base currency for display
+const baseCurrency = <?php echo json_encode($baseCurrency); ?>;
+const baseCurrencySymbol = <?php echo json_encode($baseCurrencySymbol); ?>;
 
 function filterCars() {
     const filterName = document.getElementById('name').value;
@@ -405,15 +412,15 @@ function renderCars(cars) {
                             ${hasDiscount ? `
                                 <div>
                                     <span style="text-decoration: line-through; color: #95a5a6; font-size: 0.9rem;">
-                                        ${parseFloat(car.price).toFixed(0)} MAD
+                                        ${parseFloat(car.price).toFixed(0)} ${baseCurrency}
                                     </span>
                                     <span class="ms-2" style="color: #6C5CE7; font-weight: 700; font-size: 1.1rem;">
-                                        ${parseFloat(discountedPrice).toFixed(0)} MAD
+                                        ${parseFloat(discountedPrice).toFixed(0)} ${baseCurrency}
                                     </span>
                                 </div>
                             ` : `
                                 <span style="color: #6C5CE7; font-weight: 700; font-size: 1.1rem;">
-                                    ${parseFloat(car.price).toFixed(0)} MAD
+                                    ${parseFloat(car.price).toFixed(0)} ${baseCurrency}
                                 </span>
                             `}
                         </div>

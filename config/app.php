@@ -107,11 +107,11 @@ return [
     /**
      * Default Currency
      * The base currency for your pricing
-     * Options: MAD, EUR, USD, etc.
+     * Options: USD, EUR, GBP, etc. (use ISO currency codes)
      * 
-     * CUSTOMIZATION: Change to your local currency
+     * CUSTOMIZATION: Change to your local currency code
      */
-    'default_currency' => 'MAD',
+    'default_currency' => 'USD',
     
     /**
      * Exchange Rates
@@ -120,11 +120,12 @@ return [
      * 
      * CUSTOMIZATION: Update rates according to your base currency
      * These can also be managed from Admin Panel > Settings
+     * Example: If USD is your base currency, 1 USD = 1.0, then set EUR and other rates accordingly
      */
     'currency_rates' => [
-        'MAD' => 1.0,    // Base currency
-        'EUR' => 0.092,  // 1 MAD = 0.092 EUR (example)
-        'USD' => 0.10,   // 1 MAD = 0.10 USD (example)
+        'USD' => 1.0,    // Base currency (always 1.0)
+        'EUR' => 0.92,   // 1 USD = 0.92 EUR (example - update with current rates)
+        'GBP' => 0.79,   // 1 USD = 0.79 GBP (example - update with current rates)
     ],
     
     // ============================================

@@ -1,5 +1,7 @@
 # Car Rental Website - Complete Documentation
 
+> **Note:** All examples in this documentation use placeholder values. Replace them with your own business information (company name, domain, currency, contact details, etc.).
+
 ## 📋 Table of Contents
 
 1. [Project Overview](#project-overview)
@@ -25,7 +27,7 @@ This is a complete, professional PHP-based car rental website system with a full
 - **Advanced Filtering**: Filter cars by name, fuel type, gear box, and sort by price
 - **Car Details Page**: Comprehensive car information with technical specifications
 - **WhatsApp Booking System**: Direct booking integration via WhatsApp (no database storage required)
-- **Multi-Currency Support**: Real-time currency conversion (MAD, EUR, USD) with user preference saving
+- **Multi-Currency Support**: Real-time currency conversion with user preference saving
 - **Dark/Light Mode**: Theme toggle with persistent user preference
 - **Animated Hero Section**: Engaging animated background on homepage
 - **Contact Form**: Integrated contact form with WhatsApp integration
@@ -37,8 +39,13 @@ This is a complete, professional PHP-based car rental website system with a full
 - **Image Upload**: Automatic image management with file naming
 - **Technical Specifications**: Manage car specifications (Gear Box, Fuel, Doors, Air Conditioner, Seats, Distance)
 - **Discount Management**: Set and manage discount percentages for cars
+- **Currency Management**: Full CRUD system for currencies
+  - Add, edit, and delete currencies
+  - Set base currency dynamically
+  - Configure exchange rates for all currencies
+  - Modern card-based UI for currency management
 - **Settings Management**: 
-  - Currency exchange rates configuration
+  - Dynamic currency exchange rates configuration
   - WhatsApp number setup
   - Logo upload and management
   - Social media links (Facebook, Twitter, Instagram, LinkedIn, YouTube)
@@ -168,9 +175,11 @@ chmod 644 config/app.php
    - Open: `https://yourdomain.com/`
    - Or: `https://yourdomain.com/index.php`
 
+> **Note:** All examples in this documentation use placeholder values. Replace them with your own business information.
+
 ### Step 7: Access Admin Panel
 
-1. Navigate to: `http://localhost/rental-cars/admin/`
+1. Navigate to: `http://localhost/rental-cars/admin/` (local) or `https://yourdomain.com/admin/` (live)
 2. **Default Credentials:**
    - Username: `admin`
    - Password: `admin123`
@@ -226,7 +235,7 @@ Change to:
 3. Update with your number (country code + number, no spaces or +):
 
 ```php
-'whatsapp_number' => '1234567890',  // Example: 212612345678 for Morocco
+'whatsapp_number' => '1234567890',  // Format: Country code + number (no + or spaces)
 ```
 
 **Or via Admin Panel:**
@@ -245,35 +254,67 @@ Change to:
 'contact_email' => 'contact@yourcompany.com',
 ```
 
-### Update Currency Rates
+### Manage Currencies
 
-#### Method 1: Via Admin Panel (Recommended)
+The system includes a complete Currency Management system with CRUD operations. You can add, edit, delete, and set base currencies directly from the admin panel.
+
+#### Add a New Currency
 
 1. Log in to admin panel
 2. Go to **Settings**
-3. Find "Currency Exchange Rates" section
-4. Update:
-   - **MAD to EUR**: Current exchange rate (e.g., 0.092)
-   - **MAD to USD**: Current exchange rate (e.g., 0.10)
-5. Click "Save Settings"
+3. Scroll to "Currency Management" section
+4. Click **"Add New Currency"** button
+5. Fill in the form:
+   - **Currency Code**: e.g., "USD", "EUR", "GBP" (3-letter ISO code)
+   - **Currency Name**: e.g., "US Dollar", "Euro", "British Pound"
+   - **Currency Symbol**: e.g., "$", "€", "£"
+   - **Exchange Rate**: Rate relative to base currency (base currency is always 1.0)
+   - **Set as Base Currency**: Check this box to make it the base currency
+6. Click **"Save Currency"**
 
-#### Method 2: Manual Configuration
+#### Edit a Currency
 
-1. Open `/config/app.php`
-2. Find `currency_rates` section (around line 110)
-3. Update values:
+1. Go to **Settings** → **Currency Management**
+2. Find the currency card you want to edit
+3. Click **"Edit"** button on the currency card
+4. Update the information (currency code cannot be changed)
+5. Click **"Update Currency"**
 
-```php
-'currency_rates' => [
-    'MAD' => 1.0,      // Base currency
-    'EUR' => 0.092,    // Update with current rate
-    'USD' => 0.10,     // Update with current rate
-],
-```
+#### Set Base Currency
+
+1. Go to **Settings** → **Currency Management**
+2. Find the currency you want to set as base
+3. Click **"Set Base"** button
+4. The selected currency will become the base currency (rate = 1.0)
+5. All other currencies' rates will be recalculated relative to the new base
+
+#### Delete a Currency
+
+1. Go to **Settings** → **Currency Management**
+2. Find the currency card you want to delete
+3. Click **"Delete"** button
+4. Confirm deletion
+5. **Note**: You cannot delete the base currency. Set another currency as base first.
+
+#### Update Exchange Rates
+
+1. Go to **Settings** → **Currency Management**
+2. Click **"Edit"** on any currency
+3. Update the **Exchange Rate** field
+4. Click **"Update Currency"**
 
 **To find current exchange rates:**
 - Visit: https://www.xe.com/currencyconverter/
-- Search: "MAD to EUR" or "MAD to USD"
+- Search for your base currency to other currencies
+
+**Important Notes:**
+- The base currency always has a rate of 1.0 and cannot be changed
+- When you change the base currency, all rates are automatically recalculated
+- Currency changes are reflected immediately across the entire website
+- The default currency in `/config/app.php` is used only if no currencies exist in the database
+- Currencies are stored in the `currencies` database table
+- The system automatically creates the `currencies` table if it doesn't exist when you first access Settings
+- Admin panel prices (car management) automatically display using the current base currency
 
 ### Apply Discounts to Cars
 
@@ -286,6 +327,35 @@ Change to:
    - Example: `25` for 25% off
 6. Click "Update Car"
 7. Discount badge will appear on car card automatically
+
+### Currency Management System
+
+The system includes a complete Currency Management CRUD system that allows you to manage all currencies dynamically.
+
+#### Features
+
+- **Add Currencies**: Add unlimited currencies with code, name, symbol, and exchange rate
+- **Edit Currencies**: Update currency information and exchange rates
+- **Delete Currencies**: Remove currencies (base currency cannot be deleted)
+- **Set Base Currency**: Change the base currency dynamically (all rates recalculate automatically)
+- **Card-Based UI**: Modern, responsive card design for easy currency management
+- **Real-Time Updates**: Currency changes reflect immediately across the entire website
+
+#### How It Works
+
+1. **Base Currency**: One currency is marked as "base" with a rate of 1.0
+2. **Exchange Rates**: All other currencies have rates relative to the base currency
+3. **Automatic Recalculation**: When you change the base currency, all rates are recalculated
+4. **Dynamic Display**: All prices throughout the site (frontend and admin) use the current base currency
+5. **Database-Driven**: Currencies are stored in the `currencies` table and override config file defaults
+
+#### Example Workflow
+
+1. Add USD as base currency (rate: 1.0)
+2. Add EUR with rate: 0.92 (1 USD = 0.92 EUR)
+3. Add GBP with rate: 0.79 (1 USD = 0.79 GBP)
+4. Customers can switch between currencies on the frontend
+5. All prices update automatically based on selected currency
 
 ---
 
@@ -432,7 +502,7 @@ echo password_hash('your-new-password', PASSWORD_DEFAULT);
 ### Admin Panel Features
 
 - **Car Management**: Full CRUD operations
-- **Settings**: Configure currency, WhatsApp, logo, social media
+- **Settings**: Configure currencies (CRUD), WhatsApp, logo, social media
 - **Filtering**: Advanced car filtering and sorting
 - **Image Management**: Automatic image upload and deletion
 
@@ -494,12 +564,15 @@ For support, customization requests, or questions:
 **Issue**: "WhatsApp link not working"
 - **Solution**: Verify WhatsApp number format in `/config/app.php`
 - Format: Country code + number (no spaces, no + sign)
-- Example: `212612345678` for Morocco
+- Example: `1234567890` (replace with your actual number)
 
 **Issue**: "Currency conversion not working"
-- **Solution**: Check exchange rates in admin Settings
-- Verify JavaScript is enabled in browser
-- Clear browser cache
+- **Solution**: 
+  - Check that currencies are added in Admin Panel → Settings → Currency Management
+  - Verify a base currency is set (one currency should be marked as "Base Currency")
+  - Check exchange rates are configured correctly
+  - Verify JavaScript is enabled in browser
+  - Clear browser cache
 
 ### File Structure
 
@@ -564,13 +637,15 @@ The website is tested and compatible with:
 - [ ] Import `car_rental.sql`
 - [ ] Configure database in `/config/app.php`
 - [ ] Set file permissions for `assets/images/`
-- [ ] Access website: `http://localhost/rental-cars/`
-- [ ] Log in to admin: `http://localhost/rental-cars/admin/`
+- [ ] Access website: `http://localhost/rental-cars/` (local) or `https://yourdomain.com/` (live)
+- [ ] Log in to admin: `http://localhost/rental-cars/admin/` (local) or `https://yourdomain.com/admin/` (live)
 - [ ] Change company name in `/config/app.php`
 - [ ] Upload logo via admin panel
 - [ ] Update WhatsApp number
 - [ ] Update email address
-- [ ] Configure currency rates
+- [ ] Add currencies via Admin Panel → Settings → Currency Management
+- [ ] Set your base currency
+- [ ] Configure exchange rates for all currencies
 - [ ] Change default admin password
 - [ ] Add your first car
 - [ ] Test booking via WhatsApp

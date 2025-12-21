@@ -125,38 +125,48 @@
         // Currency Conversion
         // Use rates from database if available, otherwise use defaults
         const exchangeRates = window.EXCHANGE_RATES || {
-            'MAD': 1.0,
-            'EUR': 0.092,
-            'USD': 0.10
+            'USD': 1.0,
+            'EUR': 0.92,
+            'GBP': 0.79
         };
         
-        const currencySymbols = {
-            'MAD': 'MAD',
+        // Use currency symbols from database
+        const currencySymbols = window.CURRENCY_SYMBOLS || {
+            'USD': '$',
             'EUR': '€',
-            'USD': '$'
+            'GBP': '£'
         };
+        
+        // Get base currency (first currency with rate 1.0 or default)
+        const baseCurrency = window.DEFAULT_CURRENCY || Object.keys(exchangeRates).find(code => exchangeRates[code] === 1.0) || 'USD';
         
         function formatPrice(price) {
             const formatted = parseFloat(price).toFixed(2);
             return parseFloat(formatted).toString();
         }
         
-        function convertPrice(priceMAD, toCurrency) {
-            if (toCurrency === 'MAD' || !exchangeRates[toCurrency]) {
-                return priceMAD;
+        function convertPrice(priceBase, toCurrency) {
+            // If converting to base currency or currency not found, return original price
+            if (toCurrency === baseCurrency || !exchangeRates[toCurrency]) {
+                return priceBase;
             }
-            return priceMAD * exchangeRates[toCurrency];
+            // Convert from base currency to target currency
+            // rate_to_base represents: 1 base currency = X target currency
+            // So to convert: priceBase * exchangeRates[toCurrency]
+            const targetRate = exchangeRates[toCurrency] || 1.0;
+            return priceBase * targetRate;
         }
         
         function updatePrices(currency) {
-            // Update all price elements with data-price-mad attribute
-            document.querySelectorAll('[data-price-mad]').forEach(element => {
-                const priceMAD = parseFloat(element.getAttribute('data-price-mad'));
-                if (isNaN(priceMAD)) return;
+            // Update all price elements with data-price-mad attribute (legacy) or data-price-base
+            document.querySelectorAll('[data-price-mad], [data-price-base]').forEach(element => {
+                // Support both legacy data-price-mad and new data-price-base
+                const priceBase = parseFloat(element.getAttribute('data-price-base') || element.getAttribute('data-price-mad'));
+                if (isNaN(priceBase)) return;
                 
-                const convertedPrice = convertPrice(priceMAD, currency);
+                const convertedPrice = convertPrice(priceBase, currency);
                 const formattedPrice = formatPrice(convertedPrice);
-                const symbol = currencySymbols[currency] || 'MAD';
+                const symbol = currencySymbols[currency] || currency;
                 
                 // Check if element has separate currency span
                 const currencySpan = element.querySelector('.price-currency');
@@ -167,7 +177,8 @@
                     currencySpan.textContent = symbol;
                 } else {
                     // Update text content directly
-                    if (currency === 'MAD') {
+                    // Format: symbol + price for most currencies, price + symbol for base currency
+                    if (currency === baseCurrency) {
                         element.textContent = formattedPrice + ' ' + symbol;
                     } else {
                         element.textContent = symbol + formattedPrice;
@@ -188,7 +199,7 @@
         }
         
         // Initialize currency
-        const savedCurrency = localStorage.getItem('currency') || 'MAD';
+        const savedCurrency = localStorage.getItem('currency') || baseCurrency;
         setCurrency(savedCurrency);
         
         // Add event listeners

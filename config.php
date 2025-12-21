@@ -132,20 +132,16 @@ function getFormattedPhoneNumber() {
     
     // Format based on length
     if (strlen($number) >= 10) {
-        // Format: +212 653-330752 (Morocco format) or similar
-        if (strlen($number) == 12 && substr($number, 0, 3) == '212') {
-            // Morocco: +212 653-330752
+        // Generic formatting: +XX XXX-XXXXXX
+        // Automatically detects country code and formats accordingly
+        $countryCode = substr($number, 0, strlen($number) - 9);
+        $rest = substr($number, strlen($countryCode));
+        if (strlen($rest) >= 6) {
+            return '+' . $countryCode . ' ' . substr($rest, 0, 3) . '-' . substr($rest, 3);
+        }
+        // Alternative format for 12-digit numbers: +XXX XXX-XXXXXX
+        if (strlen($number) == 12) {
             return '+' . substr($number, 0, 3) . ' ' . substr($number, 3, 3) . '-' . substr($number, 6);
-        } elseif (strlen($number) == 12 && substr($number, 0, 3) == '996') {
-            // Kyrgyzstan: +996 247-1680
-            return '+' . substr($number, 0, 3) . ' ' . substr($number, 3, 3) . '-' . substr($number, 6);
-        } else {
-            // Default formatting: +XX XXX-XXXXXX
-            $countryCode = substr($number, 0, strlen($number) - 9);
-            $rest = substr($number, strlen($countryCode));
-            if (strlen($rest) >= 6) {
-                return '+' . $countryCode . ' ' . substr($rest, 0, 3) . '-' . substr($rest, 3);
-            }
         }
     }
     
@@ -176,24 +172,138 @@ function calculateDiscountedPrice($price, $discount) {
     return $price;
 }
 
-// Exchange rates (base currency: MAD)
-// Load from database if available, otherwise use config file
-// CUSTOMIZATION: Change default rates in /config/app.php
+// Get all active currencies from database
+function getCurrencies() {
+    try {
+        $conn = getDBConnection();
+        // Check if currencies table exists
+        $tableCheck = $conn->query("SHOW TABLES LIKE 'currencies'");
+        if ($tableCheck->num_rows == 0) {
+            $conn->close();
+            return [];
+        }
+        
+        $stmt = $conn->prepare("SELECT code, name, symbol, rate_to_base, is_base FROM currencies WHERE is_active = 1 ORDER BY is_base DESC, code ASC");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $currencies = [];
+        
+        while ($row = $result->fetch_assoc()) {
+            $currencies[] = $row;
+        }
+        
+        $stmt->close();
+        $conn->close();
+        return $currencies;
+    } catch (Exception $e) {
+        return [];
+    }
+}
+
+// Get base currency from database
+function getBaseCurrency() {
+    try {
+        $conn = getDBConnection();
+        $tableCheck = $conn->query("SHOW TABLES LIKE 'currencies'");
+        if ($tableCheck->num_rows == 0) {
+            $conn->close();
+            return 'USD'; // Default fallback
+        }
+        
+        $stmt = $conn->prepare("SELECT code FROM currencies WHERE is_base = 1 AND is_active = 1 LIMIT 1");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($row = $result->fetch_assoc()) {
+            $base = $row['code'];
+            $stmt->close();
+            $conn->close();
+            return $base;
+        }
+        $stmt->close();
+        $conn->close();
+    } catch (Exception $e) {
+        // Continue to fallback
+    }
+    
+    // Fallback to default currency from settings or config
+    try {
+        $conn = getDBConnection();
+        $stmt = $conn->prepare("SELECT setting_value FROM settings WHERE setting_key = 'default_currency'");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($row = $result->fetch_assoc()) {
+            $default = $row['setting_value'];
+            $stmt->close();
+            $conn->close();
+            return $default;
+        }
+        $stmt->close();
+        $conn->close();
+    } catch (Exception $e) {
+        // Continue to config fallback
+    }
+    
+    return getAppConfig('default_currency', 'USD');
+}
+
+// Exchange rates - Load from currencies table
+// CUSTOMIZATION: Manage currencies from Admin Panel > Settings > Currency Management
 function getExchangeRates() {
     try {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("SELECT setting_key, setting_value FROM settings WHERE setting_key IN ('mad_to_eur', 'mad_to_usd')");
+        $tableCheck = $conn->query("SHOW TABLES LIKE 'currencies'");
+        if ($tableCheck->num_rows == 0) {
+            $conn->close();
+            // Fallback to legacy settings or config
+            return getLegacyExchangeRates();
+        }
+        
+        // Get base currency
+        $baseCurrency = getBaseCurrency();
+        
+        // Get all currencies
+        $stmt = $conn->prepare("SELECT code, rate_to_base FROM currencies WHERE is_active = 1");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        $rates = [];
+        while ($row = $result->fetch_assoc()) {
+            $rates[$row['code']] = floatval($row['rate_to_base']);
+        }
+        
+        $stmt->close();
+        $conn->close();
+        
+        // Ensure base currency is always 1.0
+        if (isset($rates[$baseCurrency])) {
+            $rates[$baseCurrency] = 1.0;
+        }
+        
+        return $rates;
+    } catch (Exception $e) {
+        return getLegacyExchangeRates();
+    }
+}
+
+// Legacy exchange rates (for backward compatibility)
+function getLegacyExchangeRates() {
+    try {
+        $conn = getDBConnection();
+        $stmt = $conn->prepare("SELECT setting_key, setting_value FROM settings WHERE setting_key IN ('mad_to_eur', 'mad_to_usd', 'base_to_eur', 'base_to_usd')");
         $stmt->execute();
         $result = $stmt->get_result();
         
         // Get default rates from config
-        $defaultRates = getAppConfig('currency_rates', ['MAD' => 1.0, 'EUR' => 0.092, 'USD' => 0.10]);
+        $defaultRates = getAppConfig('currency_rates', ['USD' => 1.0, 'EUR' => 0.92, 'GBP' => 0.79]);
         $rates = $defaultRates;
         
+        $baseCurrency = getBaseCurrency();
+        $rates[$baseCurrency] = 1.0; // Base currency always 1.0
+        
         while ($row = $result->fetch_assoc()) {
-            if ($row['setting_key'] === 'mad_to_eur') {
+            if ($row['setting_key'] === 'mad_to_eur' || $row['setting_key'] === 'base_to_eur') {
                 $rates['EUR'] = floatval($row['setting_value']);
-            } elseif ($row['setting_key'] === 'mad_to_usd') {
+            } elseif ($row['setting_key'] === 'mad_to_usd' || $row['setting_key'] === 'base_to_usd') {
                 $rates['USD'] = floatval($row['setting_value']);
             }
         }
@@ -203,7 +313,10 @@ function getExchangeRates() {
         return $rates;
     } catch (Exception $e) {
         // Return defaults from config if database error
-        return getAppConfig('currency_rates', ['MAD' => 1.0, 'EUR' => 0.092, 'USD' => 0.10]);
+        $defaultRates = getAppConfig('currency_rates', ['USD' => 1.0, 'EUR' => 0.92, 'GBP' => 0.79]);
+        $baseCurrency = getBaseCurrency();
+        $defaultRates[$baseCurrency] = 1.0;
+        return $defaultRates;
     }
 }
 
@@ -226,22 +339,62 @@ function formatDiscount($discount) {
     return rtrim(rtrim($formatted, '0'), '.');
 }
 
-// Helper function to convert price from MAD to another currency
-function convertPrice($priceMAD, $toCurrency = 'MAD') {
-    if ($toCurrency === 'MAD' || !isset(EXCHANGE_RATES[$toCurrency])) {
-        return $priceMAD;
+// Helper function to convert price from base currency to another currency
+function convertPrice($priceBase, $toCurrency = null) {
+    if ($toCurrency === null) {
+        $toCurrency = getBaseCurrency();
     }
-    return $priceMAD * EXCHANGE_RATES[$toCurrency];
+    
+    $baseCurrency = getBaseCurrency();
+    
+    // If converting to base currency or currency not found, return original price
+    if ($toCurrency === $baseCurrency || !isset(EXCHANGE_RATES[$toCurrency])) {
+        return $priceBase;
+    }
+    
+    // Convert from base currency to target currency
+    // rate_to_base represents: 1 base currency = X target currency
+    // So to convert: priceBase * EXCHANGE_RATES[toCurrency]
+    $targetRate = EXCHANGE_RATES[$toCurrency] ?? 1.0;
+    
+    return $priceBase * $targetRate;
 }
 
-// Helper function to get currency symbol
-function getCurrencySymbol($currency = 'MAD') {
+// Helper function to get currency symbol from database
+function getCurrencySymbol($currency = null) {
+    if ($currency === null) {
+        $currency = getBaseCurrency();
+    }
+    
+    try {
+        $conn = getDBConnection();
+        $tableCheck = $conn->query("SHOW TABLES LIKE 'currencies'");
+        if ($tableCheck->num_rows > 0) {
+            $stmt = $conn->prepare("SELECT symbol FROM currencies WHERE code = ? AND is_active = 1 LIMIT 1");
+            $stmt->bind_param("s", $currency);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($row = $result->fetch_assoc() && !empty($row['symbol'])) {
+                $symbol = $row['symbol'];
+                $stmt->close();
+                $conn->close();
+                return $symbol;
+            }
+            $stmt->close();
+        }
+        $conn->close();
+    } catch (Exception $e) {
+        // Continue to fallback
+    }
+    
+    // Fallback to default symbols
     $symbols = [
         'MAD' => 'MAD',
         'EUR' => '€',
-        'USD' => '$'
+        'USD' => '$',
+        'GBP' => '£'
     ];
-    return $symbols[$currency] ?? 'MAD';
+    return $symbols[$currency] ?? $currency;
 }
 
 // Helper function to get logo path from database

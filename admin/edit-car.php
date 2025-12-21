@@ -4,6 +4,9 @@ require_once '../config.php';
 $pageTitle = 'Edit Car - Admin Panel';
 include 'header.php';
 
+// Get base currency for display
+$baseCurrency = getBaseCurrency();
+
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     header('Location: index.php');
     exit;
@@ -236,7 +239,7 @@ $conn->close();
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="price" class="form-label">Price per Day (MAD) *</label>
+                            <label for="price" class="form-label">Price per Day (<?php echo htmlspecialchars($baseCurrency); ?>) *</label>
                             <input type="number" class="form-control" id="price" name="price" 
                                    step="0.01" min="0" required 
                                    value="<?php echo htmlspecialchars($car['price']); ?>">
