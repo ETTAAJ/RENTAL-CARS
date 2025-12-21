@@ -22,6 +22,185 @@ include 'header.php';
         margin-right: auto;
     }
     
+    /* Hero Section */
+    .about-hero {
+        background: linear-gradient(135deg, rgba(108, 92, 231, 0.1) 0%, rgba(255, 107, 53, 0.1) 100%);
+        border-radius: 24px;
+        padding: 4rem 2rem;
+        margin-bottom: 4rem;
+        text-align: center;
+    }
+    
+    .about-hero h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: var(--dark-text);
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, var(--primary-purple), var(--primary-orange));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .about-hero p {
+        font-size: 1.25rem;
+        color: var(--muted);
+        max-width: 800px;
+        margin: 0 auto;
+        line-height: 1.8;
+    }
+    
+    /* Feature Cards */
+    .feature-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 2.5rem;
+        height: 100%;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        border-color: var(--primary-purple);
+    }
+    
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--primary-purple), var(--primary-orange));
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
+    }
+    
+    .feature-icon i {
+        font-size: 2.5rem;
+        color: white;
+    }
+    
+    .feature-card h4 {
+        font-weight: 700;
+        color: var(--dark-text);
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+    }
+    
+    .feature-card p {
+        color: var(--muted);
+        line-height: 1.8;
+        margin: 0;
+    }
+    
+    /* Statistics Section */
+    .stats-section {
+        background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-orange) 100%);
+        border-radius: 24px;
+        padding: 4rem 2rem;
+        margin: 4rem 0;
+        color: white;
+    }
+    
+    .stat-item {
+        text-align: center;
+        padding: 1.5rem;
+    }
+    
+    .stat-number {
+        font-size: 4.5rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        line-height: 1;
+    }
+    
+    .stat-label {
+        font-size: 1.3rem;
+        font-weight: 600;
+        opacity: 0.95;
+    }
+    
+    /* Why Choose Us Section */
+    .why-choose-section {
+        margin: 4rem 0;
+    }
+    
+    .why-choose-item {
+        display: flex;
+        align-items: start;
+        gap: 1.5rem;
+        padding: 2rem;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .why-choose-item:hover {
+        transform: translateX(10px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        border-color: var(--primary-orange);
+    }
+    
+    .why-choose-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--primary-purple), var(--primary-orange));
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    
+    .why-choose-icon i {
+        font-size: 1.8rem;
+        color: white;
+    }
+    
+    .why-choose-content h5 {
+        font-weight: 700;
+        color: var(--dark-text);
+        margin-bottom: 0.5rem;
+        font-size: 1.25rem;
+    }
+    
+    .why-choose-content p {
+        color: var(--muted);
+        margin: 0;
+        line-height: 1.7;
+    }
+    
+    /* Mission Section */
+    .mission-section {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 4rem 3rem;
+        margin: 4rem 0;
+        text-align: center;
+    }
+    
+    .mission-section h2 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--dark-text);
+        margin-bottom: 1.5rem;
+    }
+    
+    .mission-section p {
+        font-size: 1.1rem;
+        color: var(--muted);
+        line-height: 1.9;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    
     /* Desktop/PC Responsive Design - Centered */
     @media (min-width: 1200px) {
         .about-container {
@@ -39,40 +218,34 @@ include 'header.php';
             margin-right: auto;
         }
         
-        .about-section {
-            padding: 4rem 0;
+        .about-hero {
+            padding: 5rem 3rem;
         }
         
-        .about-title {
-            font-size: 3rem !important;
+        .about-hero h1 {
+            font-size: 4rem;
         }
         
-        .about-feature-grid {
-            gap: 2rem !important;
-            margin: 0 auto;
+        .about-hero p {
+            font-size: 1.4rem;
         }
         
-        .about-video-section {
-            height: 600px !important;
-            margin: 3rem auto;
-            max-width: 100%;
+        .feature-card {
+            padding: 3rem;
         }
         
-        .about-statistics {
-            padding: 3rem 0;
-            margin: 0 auto;
+        .stats-section {
+            padding: 5rem 3rem;
         }
         
-        .about-stat-number {
-            font-size: 5rem !important;
+        .stat-number {
+            font-size: 5.5rem;
         }
         
-        .about-memories-section {
-            padding: 2rem 0;
-            margin: 0 auto;
+        .mission-section {
+            padding: 5rem 4rem;
         }
         
-        /* Center all rows */
         .row {
             margin-left: auto;
             margin-right: auto;
@@ -93,13 +266,12 @@ include 'header.php';
             margin-right: auto;
         }
         
-        .about-title {
-            font-size: 2.75rem !important;
+        .about-hero h1 {
+            font-size: 3rem;
         }
         
-        .about-video-section {
-            height: 550px !important;
-            margin: 0 auto;
+        .stat-number {
+            font-size: 4.5rem;
         }
         
         .row {
@@ -124,18 +296,35 @@ include 'header.php';
             margin-right: auto;
         }
         
-        .about-title {
-            font-size: 2rem !important;
+        .about-hero {
+            padding: 3rem 1.5rem;
+            margin-bottom: 3rem;
         }
         
-        .about-video-section {
-            height: 400px !important;
-            margin: 0 auto;
-            width: 100%;
+        .about-hero h1 {
+            font-size: 2.5rem;
         }
         
-        .about-stat-number {
-            font-size: 3rem !important;
+        .about-hero p {
+            font-size: 1.1rem;
+        }
+        
+        .feature-card {
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stats-section {
+            padding: 3rem 1.5rem;
+            margin: 3rem 0;
+        }
+        
+        .stat-number {
+            font-size: 3.5rem;
+        }
+        
+        .mission-section {
+            padding: 3rem 2rem;
         }
         
         .row {
@@ -160,57 +349,80 @@ include 'header.php';
             margin-right: auto;
         }
         
-        .about-title {
-            font-size: 1.75rem !important;
-            margin-bottom: 1.5rem !important;
-            text-align: center;
+        .about-hero {
+            padding: 2.5rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 16px;
         }
         
-        .about-video-section {
-            height: 300px !important;
-            border-radius: 12px !important;
-            width: 100%;
-            margin: 0 auto;
-        }
-        
-        .about-stat-number {
-            font-size: 2.5rem !important;
-        }
-        
-        .about-feature-grid {
-            margin: 0 auto;
-        }
-        
-        .about-feature-grid .col-md-6 {
-            width: 100% !important;
+        .about-hero h1 {
+            font-size: 2rem;
             margin-bottom: 1rem;
-            padding: 0;
-            margin-left: auto;
-            margin-right: auto;
         }
         
-        .about-statistics {
-            margin: 0 auto;
+        .about-hero p {
+            font-size: 1rem;
         }
         
-        .about-statistics .col-md-4 {
-            width: 100% !important;
+        .feature-card {
+            padding: 1.5rem;
             margin-bottom: 1.5rem;
-            padding: 0;
-            margin-left: auto;
-            margin-right: auto;
         }
         
-        .about-memories-section {
-            padding: 1rem 0;
-            margin: 0 auto;
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            margin-bottom: 1.25rem;
         }
         
-        .about-memories-section .col-lg-6 {
-            width: 100% !important;
-            padding: 0;
-            margin-left: auto;
-            margin-right: auto;
+        .feature-icon i {
+            font-size: 2rem;
+        }
+        
+        .feature-card h4 {
+            font-size: 1.3rem;
+        }
+        
+        .stats-section {
+            padding: 2.5rem 1.5rem;
+            margin: 2.5rem 0;
+            border-radius: 16px;
+        }
+        
+        .stat-item {
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+        }
+        
+        .why-choose-section {
+            margin: 2.5rem 0;
+        }
+        
+        .why-choose-item {
+            padding: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+        
+        .mission-section {
+            padding: 2.5rem 1.5rem;
+            margin: 2.5rem 0;
+            border-radius: 16px;
+        }
+        
+        .mission-section h2 {
+            font-size: 2rem;
+        }
+        
+        .mission-section p {
+            font-size: 1rem;
         }
         
         .section-title {
@@ -234,33 +446,63 @@ include 'header.php';
             width: 100%;
         }
         
-        .about-section {
-            margin-left: auto;
-            margin-right: auto;
+        .about-hero {
+            padding: 2rem 1rem;
         }
         
-        .about-title {
-            font-size: 1.5rem !important;
+        .about-hero h1 {
+            font-size: 1.75rem;
+        }
+        
+        .about-hero p {
+            font-size: 0.95rem;
+        }
+        
+        .feature-card {
+            padding: 1.25rem;
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+        }
+        
+        .feature-icon i {
+            font-size: 1.8rem;
+        }
+        
+        .feature-card h4 {
+            font-size: 1.2rem;
+        }
+        
+        .stats-section {
+            padding: 2rem 1rem;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+        }
+        
+        .why-choose-item {
+            padding: 1.25rem;
+            flex-direction: column;
             text-align: center;
         }
         
-        .about-video-section {
-            height: 250px !important;
+        .why-choose-icon {
             margin: 0 auto;
         }
         
-        .about-stat-number {
-            font-size: 2rem !important;
+        .mission-section {
+            padding: 2rem 1rem;
         }
         
-        .about-feature-grid {
-            margin: 0 auto;
-        }
-        
-        .about-feature-grid .col-md-6 {
-            padding: 1rem !important;
-            margin-left: auto;
-            margin-right: auto;
+        .mission-section h2 {
+            font-size: 1.75rem;
         }
         
         .section-title {
@@ -291,91 +533,44 @@ include 'header.php';
             margin-right: auto;
         }
         
+        .about-hero {
+            padding: 2rem 1.25rem;
+            margin-bottom: 2rem;
+        }
+        
+        .about-hero h1 {
+            font-size: 1.8rem;
+        }
+        
+        .about-hero p {
+            font-size: 0.95rem;
+        }
+        
+        .feature-card {
+            padding: 1.5rem;
+        }
+        
+        .stats-section {
+            padding: 2rem 1.25rem;
+        }
+        
+        .stat-number {
+            font-size: 2.75rem;
+        }
+        
+        .mission-section {
+            padding: 2rem 1.25rem;
+        }
+        
+        .mission-section h2 {
+            font-size: 1.8rem;
+        }
+        
         .section-title {
             font-size: 1.7rem !important;
             margin-bottom: 1.75rem !important;
             padding: 0 0.5rem;
             text-align: center;
-        }
-        
-        .about-title {
-            font-size: 1.6rem !important;
-            margin-bottom: 1.5rem !important;
-            line-height: 1.3;
-            text-align: center;
-        }
-        
-        .about-video-section {
-            height: 280px !important;
-            border-radius: 12px !important;
-            margin-bottom: 2rem !important;
-            width: 100%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .about-statistics {
-            padding: 2rem 0;
-            margin: 0 auto;
-        }
-        
-        .about-stat-number {
-            font-size: 2.25rem !important;
-        }
-        
-        .about-statistics .col-md-4 {
-            width: 100% !important;
-            margin-bottom: 1.5rem;
-            padding: 0;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .about-feature-grid {
-            gap: 1rem !important;
-            margin: 0 auto;
-        }
-        
-        .about-feature-grid .col-md-6 {
-            width: 100% !important;
-            padding: 1.25rem !important;
-            margin-bottom: 1rem;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .about-feature-grid .col-md-6 h4 {
-            font-size: 1.2rem;
-            margin-bottom: 0.75rem;
-        }
-        
-        .about-feature-grid .col-md-6 p {
-            font-size: 0.9rem;
-            line-height: 1.7;
-        }
-        
-        .about-memories-section {
-            padding: 1.25rem 0;
-            margin: 0 auto;
-        }
-        
-        .about-memories-section .about-title {
-            font-size: 1.6rem !important;
-            margin-bottom: 1.5rem !important;
-            text-align: center;
-        }
-        
-        .about-memories-section p {
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-        
-        .about-memories-section .col-lg-6 {
-            width: 100% !important;
-            padding: 0;
-            margin-left: auto;
-            margin-right: auto;
         }
         
         .row {
@@ -396,157 +591,134 @@ include 'header.php';
 
     <!-- About Us Section -->
     <div class="py-5 about-section" style="margin-left: auto; margin-right: auto;">
-        <h2 class="section-title" style="text-align: center;">About Us</h2>
-        <div class="row align-items-center mb-5">
-            <div class="col-lg-6">
-                <h3 class="about-title" style="font-size: 2.5rem; font-weight: 800; color: var(--dark-text); margin-bottom: 2rem; line-height: 1.2;">
-                    Where every drive feels extraordinary
-                </h3>
-            </div>
-            <div class="col-lg-6">
-                <div class="row g-4 about-feature-grid">
-                    <div class="col-md-6">
-                        <div style="padding: 2rem; background: var(--card); border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); height: 100%; border: 1px solid var(--border);">
-                            <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary-purple), var(--primary-orange)); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
-                                <i class="bi bi-car-front" style="font-size: 1.8rem; color: white;"></i>
-                            </div>
-                            <h4 style="font-weight: 700; color: var(--dark-text); margin-bottom: 1rem; font-size: 1.3rem;">Variety Brands</h4>
-                            <p style="color: var(--muted); line-height: 1.8; margin: 0;">Diam tincidunt tincidunt erat at semper fermentum. Id ultricies quis adipiscing velit semper morbi.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div style="padding: 2rem; background: var(--card); border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); height: 100%; border: 1px solid var(--border);">
-                            <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary-purple), var(--primary-orange)); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
-                                <i class="bi bi-speedometer2" style="font-size: 1.8rem; color: white;"></i>
-                            </div>
-                            <h4 style="font-weight: 700; color: var(--dark-text); margin-bottom: 1rem; font-size: 1.3rem;">Maximum Freedom</h4>
-                            <p style="color: var(--muted); line-height: 1.8; margin: 0;">Gravida auctor fermentum morbi vulputate ac egestas orcietium convallis pretium convallis.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div style="padding: 2rem; background: var(--card); border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); height: 100%; border: 1px solid var(--border);">
-                            <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary-purple), var(--primary-orange)); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
-                                <i class="bi bi-headset" style="font-size: 1.8rem; color: white;"></i>
-                            </div>
-                            <h4 style="font-weight: 700; color: var(--dark-text); margin-bottom: 1rem; font-size: 1.3rem;">Reliable Support</h4>
-                            <p style="color: var(--muted); line-height: 1.8; margin: 0;">Pretium convallis id diam sed commodo vestibulum lobortis volutpat adipiscing velit semper.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div style="padding: 2rem; background: var(--card); border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); height: 100%; border: 1px solid var(--border);">
-                            <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary-purple), var(--primary-orange)); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
-                                <i class="bi bi-phone" style="font-size: 1.8rem; color: white;"></i>
-                            </div>
-                            <h4 style="font-weight: 700; color: var(--dark-text); margin-bottom: 1rem; font-size: 1.3rem;">Flexibility On The Go</h4>
-                            <p style="color: var(--muted); line-height: 1.8; margin: 0;">Aliquam adipiscing velit semper morbi purus non eu cursus porttitor tristique et gravida.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        
+        <!-- Hero Section -->
+        <div class="about-hero">
+            <h1>About <?php echo htmlspecialchars(getSiteName()); ?></h1>
+            <p>We are a trusted car rental company dedicated to providing exceptional service and quality vehicles. With years of experience in the industry, we strive to make every journey memorable and comfortable for our customers.</p>
         </div>
 
-        <!-- Video Section -->
-        <div class="mb-5 about-video-section" style="position: relative; border-radius: 20px; overflow: hidden; height: 500px; background: #000;">
-            <video id="about-video" autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;">
-                <source src="vidio/vidio-marrakech.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <div id="video-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(108, 92, 231, 0.3), rgba(255, 107, 53, 0.3)); display: flex; align-items: center; justify-content: center; transition: opacity 0.3s;">
-                <div id="play-button" style="width: 100px; height: 100px; background: var(--primary-purple); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); transition: transform 0.3s; cursor: pointer;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-                    <i class="bi bi-play-fill" style="font-size: 2.5rem; color: white; margin-left: 5px;"></i>
+        <!-- Features Grid -->
+        <div class="mb-5">
+            <h2 class="section-title" style="text-align: center; margin-bottom: 3rem;">Why Choose Us</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-car-front"></i>
+                        </div>
+                        <h4>Wide Selection</h4>
+                        <p>Choose from our extensive fleet of premium vehicles, from economy to luxury, all maintained to the highest standards.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <h4>Safe & Reliable</h4>
+                        <p>All our vehicles undergo regular maintenance and safety checks to ensure your peace of mind on every journey.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-clock"></i>
+                        </div>
+                        <h4>24/7 Support</h4>
+                        <p>Our dedicated customer support team is available around the clock to assist you with any questions or concerns.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-currency-dollar"></i>
+                        </div>
+                        <h4>Best Prices</h4>
+                        <p>Competitive pricing with flexible rental options. No hidden fees, transparent pricing for all our services.</p>
+                    </div>
                 </div>
             </div>
         </div>
-        
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const video = document.getElementById('about-video');
-                const overlay = document.getElementById('video-overlay');
-                const playButton = document.getElementById('play-button');
-                
-                if (playButton && video) {
-                    playButton.addEventListener('click', function() {
-                        if (video.paused) {
-                            video.play();
-                            overlay.style.opacity = '0';
-                            setTimeout(() => overlay.style.display = 'none', 300);
-                        } else {
-                            video.pause();
-                            overlay.style.display = 'flex';
-                            overlay.style.opacity = '1';
-                        }
-                    });
-                }
-            });
-        </script>
 
         <!-- Statistics Section -->
-        <div class="row text-center mb-5 about-statistics" style="margin-left: auto; margin-right: auto;">
-            <div class="col-md-4 mb-4">
-                <div class="about-stat-number" style="font-size: 4rem; font-weight: 800; color: var(--primary-purple); margin-bottom: 0.5rem;">20k+</div>
-                <div style="font-size: 1.2rem; color: var(--muted); font-weight: 600;">Happy customers</div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="about-stat-number" style="font-size: 4rem; font-weight: 800; color: var(--primary-purple); margin-bottom: 0.5rem;">540+</div>
-                <div style="font-size: 1.2rem; color: var(--muted); font-weight: 600;">Cars in fleet</div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="about-stat-number" style="font-size: 4rem; font-weight: 800; color: var(--primary-purple); margin-bottom: 0.5rem;">25+</div>
-                <div style="font-size: 1.2rem; color: var(--muted); font-weight: 600;">Years of experience</div>
+        <div class="stats-section">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="stat-item">
+                        <div class="stat-number">20k+</div>
+                        <div class="stat-label">Happy Customers</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-item">
+                        <div class="stat-number">540+</div>
+                        <div class="stat-label">Cars in Fleet</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-item">
+                        <div class="stat-number">25+</div>
+                        <div class="stat-label">Years of Experience</div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Unlock Memories Section -->
-        <div class="row align-items-center about-memories-section">
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <h3 class="about-title" style="font-size: 2.5rem; font-weight: 800; color: var(--dark-text); margin-bottom: 2rem; line-height: 1.2;">
-                    Unlock unforgettable memories on the road
-                </h3>
-                <p style="color: var(--muted); line-height: 1.8; margin-bottom: 2rem; font-size: 1.1rem;">
-                    Aliquam adipiscing velit semper morbi. Purus non eu cursus porttitor tristique et gravida. Quis nunc interdum gravida ullamcorper.
-                </p>
-                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                    <div style="display: flex; align-items: start; gap: 1rem;">
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary-purple), var(--primary-orange)); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <i class="bi bi-check-lg" style="font-size: 1.5rem; color: white;"></i>
+        <!-- Why Choose Us Details -->
+        <div class="why-choose-section">
+            <h2 class="section-title" style="text-align: center; margin-bottom: 3rem;">What Makes Us Different</h2>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="why-choose-item">
+                        <div class="why-choose-icon">
+                            <i class="bi bi-check-lg"></i>
                         </div>
-                        <div>
-                            <h5 style="font-weight: 700; color: var(--dark-text); margin-bottom: 0.5rem;">Wide range of vehicles</h5>
-                            <p style="color: var(--muted); margin: 0; line-height: 1.6;">From economy to luxury, we have the perfect car for every journey and budget.</p>
+                        <div class="why-choose-content">
+                            <h5>Premium Vehicle Fleet</h5>
+                            <p>From economy cars to luxury vehicles, we offer a diverse range of well-maintained cars to suit every need and budget.</p>
                         </div>
                     </div>
-                    <div style="display: flex; align-items: start; gap: 1rem;">
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary-purple), var(--primary-orange)); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <i class="bi bi-calendar-check" style="font-size: 1.5rem; color: white;"></i>
+                    <div class="why-choose-item">
+                        <div class="why-choose-icon">
+                            <i class="bi bi-calendar-check"></i>
                         </div>
-                        <div>
-                            <h5 style="font-weight: 700; color: var(--dark-text); margin-bottom: 0.5rem;">Easy booking process</h5>
-                            <p style="color: var(--muted); margin: 0; line-height: 1.6;">Book your car in minutes with our simple and secure online booking system.</p>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: start; gap: 1rem;">
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary-purple), var(--primary-orange)); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <i class="bi bi-clock" style="font-size: 1.5rem; color: white;"></i>
-                        </div>
-                        <div>
-                            <h5 style="font-weight: 700; color: var(--dark-text); margin-bottom: 0.5rem;">Flexible rental options</h5>
-                            <p style="color: var(--muted); margin: 0; line-height: 1.6;">Choose from daily, weekly, or monthly rentals with flexible pick-up and return times.</p>
+                        <div class="why-choose-content">
+                            <h5>Easy Booking Process</h5>
+                            <p>Book your car in minutes through our simple and secure online booking system. Quick, easy, and hassle-free.</p>
                         </div>
                     </div>
-                    <div style="display: flex; align-items: start; gap: 1rem;">
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary-purple), var(--primary-orange)); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <i class="bi bi-shield-check" style="font-size: 1.5rem; color: white;"></i>
+                </div>
+                <div class="col-lg-6">
+                    <div class="why-choose-item">
+                        <div class="why-choose-icon">
+                            <i class="bi bi-clock-history"></i>
                         </div>
-                        <div>
-                            <h5 style="font-weight: 700; color: var(--dark-text); margin-bottom: 0.5rem;">24/7 customer support</h5>
-                            <p style="color: var(--muted); margin: 0; line-height: 1.6;">Our dedicated support team is available around the clock to assist you.</p>
+                        <div class="why-choose-content">
+                            <h5>Flexible Rental Options</h5>
+                            <p>Choose from daily, weekly, or monthly rentals with flexible pick-up and return times to fit your schedule.</p>
+                        </div>
+                    </div>
+                    <div class="why-choose-item">
+                        <div class="why-choose-icon">
+                            <i class="bi bi-headset"></i>
+                        </div>
+                        <div class="why-choose-content">
+                            <h5>24/7 Customer Support</h5>
+                            <p>Our dedicated support team is available around the clock to assist you with any questions or emergency situations.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Mission Statement -->
+        <div class="mission-section">
+            <h2>Our Mission</h2>
+            <p>At <?php echo htmlspecialchars(getSiteName()); ?>, our mission is to provide exceptional car rental services that exceed our customers' expectations. We are committed to offering quality vehicles, competitive prices, and outstanding customer service. Every journey with us is designed to be comfortable, safe, and memorable. We believe in building long-lasting relationships with our customers through trust, reliability, and continuous improvement.</p>
+        </div>
+
     </div>
 </div>
 
 <?php include 'footer.php'; ?>
-
