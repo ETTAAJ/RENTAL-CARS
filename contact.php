@@ -1,7 +1,7 @@
 <?php
 require_once 'config.php';
 
-$pageTitle = 'Contact Us - RENTAL CARS';
+$pageTitle = 'Contact Us - ' . getSiteName();
 include 'header.php';
 
 // WhatsApp number for contact
@@ -10,7 +10,7 @@ $formattedPhone = getFormattedPhoneNumber();
 ?>
 
 <div class="contact-page">
-    <div class="container">
+    <div class="container" style="margin-left: auto; margin-right: auto; width: 100%; max-width: 1400px;">
         <!-- Page Header -->
         <div class="contact-header">
             <nav aria-label="breadcrumb">
@@ -66,13 +66,13 @@ $formattedPhone = getFormattedPhoneNumber();
             </a>
 
             <!-- Email -->
-            <a href="mailto:contact@rentalcars.com" class="info-card">
+            <a href="mailto:<?php echo htmlspecialchars(getContactEmail()); ?>" class="info-card">
                 <div class="info-icon">
                     <i class="bi bi-envelope-fill"></i>
                 </div>
                 <div class="info-content">
                     <h4>Email</h4>
-                    <p class="info-highlight">contact@rentalcars.com</p>
+                    <p class="info-highlight"><?php echo htmlspecialchars(getContactEmail()); ?></p>
                 </div>
             </a>
 
@@ -131,6 +131,7 @@ $formattedPhone = getFormattedPhoneNumber();
 
 .contact-page .container {
     max-width: 600px;
+    margin: 0 auto;
     padding: 0 1rem;
 }
 
@@ -422,6 +423,7 @@ $formattedPhone = getFormattedPhoneNumber();
 @media (min-width: 768px) {
     .contact-page .container {
         max-width: 700px;
+        margin: 0 auto;
         padding: 0 2rem;
     }
     
@@ -454,7 +456,261 @@ $formattedPhone = getFormattedPhoneNumber();
     
     .contact-page .container {
         max-width: 1100px;
+        margin: 0 auto;
     }
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+    .contact-page {
+        padding: 1rem 0 2rem;
+    }
+    
+    .contact-page .container {
+        padding: 0 0.75rem;
+        max-width: 100%;
+    }
+    
+    .contact-header {
+        margin-bottom: 1.5rem;
+    }
+    
+    .contact-form-card {
+        padding: 1.5rem !important;
+        border-radius: 12px;
+        width: 100%;
+    }
+    
+    .form-header h2 {
+        font-size: 1.5rem !important;
+    }
+    
+    .form-header p {
+        font-size: 0.9rem;
+    }
+    
+    .form-input {
+        padding: 0.75rem;
+        font-size: 16px; /* Prevents zoom on iOS */
+        width: 100%;
+    }
+    
+    .form-textarea {
+        min-height: 120px;
+        width: 100%;
+    }
+    
+    .submit-btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        width: 100%;
+    }
+    
+    .contact-info-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1rem;
+    }
+    
+    .info-card {
+        width: 100% !important;
+        padding: 1.25rem;
+    }
+    
+    .info-icon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .info-icon i {
+        font-size: 1.5rem;
+    }
+    
+    .social-section {
+        padding: 1.5rem 0;
+        width: 100%;
+    }
+    
+    .social-section h3 {
+        font-size: 1.25rem;
+    }
+    
+    .social-icons {
+        gap: 1rem;
+    }
+    
+    .social-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 1.2rem;
+    }
+    
+    .map-section {
+        width: 100%;
+    }
+    
+    .map-wrapper {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .contact-page .container {
+        padding: 0 0.5rem;
+    }
+    
+    .contact-form-card {
+        padding: 1rem !important;
+    }
+    
+    .form-header h2 {
+        font-size: 1.25rem !important;
+    }
+    
+    .form-input {
+        padding: 0.65rem;
+        font-size: 16px;
+    }
+    
+    .info-card {
+        padding: 1rem;
+    }
+    
+    .info-card h4 {
+        font-size: 1rem;
+    }
+    
+    .info-highlight {
+        font-size: 0.9rem;
+    }
+    
+    .social-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+}
+
+/* Specific optimization for 428px width (iPhone 12/13 Pro Max) */
+@media (max-width: 428px) {
+    .contact-page {
+        padding: 1.25rem 0 2rem;
+    }
+    
+    .contact-page .container {
+        padding: 0 0.75rem;
+        max-width: 100%;
+    }
+    
+    .contact-header {
+        margin-bottom: 1.25rem;
+    }
+    
+    .contact-form-card {
+        padding: 1.25rem !important;
+        border-radius: 12px;
+        width: 100%;
+    }
+    
+    .form-header h2 {
+        font-size: 1.4rem !important;
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-header p {
+        font-size: 0.9rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+    
+    .form-label {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-input {
+        padding: 0.75rem;
+        font-size: 16px;
+        border-radius: 8px;
+        width: 100%;
+    }
+    
+    .form-textarea {
+        min-height: 130px;
+        font-size: 16px;
+        width: 100%;
+    }
+    
+    .submit-btn {
+        padding: 0.85rem 1.5rem;
+        font-size: 1rem;
+        min-height: 48px;
+        width: 100%;
+    }
+    
+    .contact-info-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+    }
+    
+    .info-card {
+        width: 100% !important;
+        padding: 1.25rem;
+        border-radius: 12px;
+    }
+    
+    .info-icon {
+        width: 55px;
+        height: 55px;
+        margin-bottom: 1rem;
+    }
+    
+    .info-icon i {
+        font-size: 1.6rem;
+    }
+    
+    .info-card h4 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .info-highlight {
+        font-size: 0.95rem;
+    }
+    
+    .social-section {
+        padding: 1.75rem 0;
+        width: 100%;
+    }
+    
+    .social-section h3 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+    }
+    
+    .social-icons {
+        gap: 0.75rem;
+        justify-content: center;
+    }
+    
+    .social-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 1.1rem;
+    }
+    
+    .map-section {
+        width: 100%;
+    }
+    
+    .map-wrapper {
+        width: 100%;
+    }
+}
     
     .contact-form-card {
         display: grid;
@@ -563,6 +819,9 @@ $formattedPhone = getFormattedPhoneNumber();
 </style>
 
 <script>
+// Site name from PHP configuration
+const siteName = <?php echo json_encode(getSiteName()); ?>;
+
 // Function to send contact form data to WhatsApp
 function sendContactToWhatsApp(event) {
     event.preventDefault();
@@ -595,7 +854,7 @@ function sendContactToWhatsApp(event) {
 ${message}
 
 ---
-Sent from RENTAL CARS website`;
+Sent from ${siteName} website`;
 
     // Encode message for URL
     const encodedMessage = encodeURIComponent(whatsappMessage);

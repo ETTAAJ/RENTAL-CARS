@@ -306,20 +306,190 @@
                 height: 55px;
                 font-size: 1.6rem;
             }
+            
+            .site-footer {
+                padding: 2rem 0 1rem;
+            }
+            
+            .footer-container {
+                padding: 0 0.75rem;
+                max-width: 100%;
+            }
+            
+            .site-footer .row {
+                margin-left: 0;
+                margin-right: 0;
+            }
+            
+            .site-footer .col-md-4 {
+                width: 100% !important;
+                margin-bottom: 1.5rem;
+                padding: 0;
+            }
+            
+            .footer-text {
+                font-size: 0.9rem;
+            }
+            
+            .site-footer h5 {
+                font-size: 1.1rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .footer-link {
+                font-size: 1.3rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .floating-phone-btn {
+                bottom: 15px;
+                right: 15px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.4rem;
+            }
+            
+            .site-footer {
+                padding: 1.5rem 0 1rem;
+            }
+            
+            .footer-container {
+                padding: 0 0.5rem;
+            }
+            
+            .footer-text {
+                font-size: 0.85rem;
+                line-height: 1.6;
+            }
+            
+            .site-footer h5 {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .footer-link {
+                font-size: 1.2rem;
+            }
+            
+            .footer-copyright {
+                font-size: 0.8rem;
+            }
+        }
+        
+        /* Specific optimization for 428px width (iPhone 12/13 Pro Max) */
+        @media (max-width: 428px) {
+            .site-footer {
+                padding: 2rem 0 1rem;
+            }
+            
+            .footer-container {
+                padding: 0 0.75rem;
+                max-width: 100%;
+            }
+            
+            .site-footer .row {
+                margin-bottom: 1.5rem;
+                margin-left: 0;
+                margin-right: 0;
+            }
+            
+            .site-footer .col-md-4 {
+                width: 100% !important;
+                margin-bottom: 1.5rem;
+                padding: 0;
+            }
+            
+            .site-footer h5 {
+                font-size: 1.05rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .footer-text {
+                font-size: 0.88rem;
+                line-height: 1.7;
+            }
+            
+            .footer-link {
+                font-size: 1.25rem;
+            }
+            
+            .footer-copyright {
+                font-size: 0.82rem;
+                padding-top: 1rem;
+            }
+            
+            .floating-phone-btn {
+                bottom: 18px;
+                right: 18px;
+                width: 52px;
+                height: 52px;
+                font-size: 1.5rem;
+            }
         }
         
         /* Hide on admin pages */
         body.admin-page .floating-phone-btn {
             display: none;
         }
+        
+        /* Desktop/PC Responsive Design for Footer - Centered */
+        @media (min-width: 1200px) {
+            .site-footer {
+                padding: 4rem 0 2rem;
+                display: flex;
+                justify-content: center;
+            }
+            
+            .footer-container {
+                max-width: 1400px;
+                margin-left: auto;
+                margin-right: auto;
+                padding: 0 2rem;
+                width: 100%;
+            }
+            
+            .site-footer .row {
+                max-width: 100%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .footer-text {
+                font-size: 1rem;
+                line-height: 1.9;
+            }
+            
+            .footer-link {
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (min-width: 992px) and (max-width: 1199px) {
+            .footer-container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 1.5rem;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .floating-phone-btn {
+                width: 65px;
+                height: 65px;
+                font-size: 2rem;
+                bottom: 40px;
+                right: 40px;
+            }
+        }
     </style>
     
     <footer class="site-footer">
-        <div class="container">
+        <div class="container footer-container" style="margin-left: auto; margin-right: auto; width: 100%; max-width: 1400px;">
             <div class="row">
                 <div class="col-md-4 mb-4">
                     <h5 style="font-weight: 800; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; letter-spacing: 0.5px; color: var(--primary);">
-                        <img src="<?php echo htmlspecialchars($logo_path ?? 'assets/images/RENTAL-CARS.png'); ?>" alt="RENTAL CARS Logo" style="width: 35px; height: 35px; border-radius: 50%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <img src="<?php echo htmlspecialchars($logo_path ?? getLogoPath()); ?>" alt="<?php echo htmlspecialchars(getSiteName()); ?> Logo" style="width: 35px; height: 35px; border-radius: 50%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <svg width="35" height="35" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: none;">
                             <rect width="45" height="45" rx="10" fill="url(#footerLogoGradient)"/>
                             <path d="M22.5 12L28 18H26V28H19V18H17L22.5 12Z" fill="white"/>
@@ -331,9 +501,9 @@
                                 </linearGradient>
                             </defs>
                         </svg>
-                        <span style="background: linear-gradient(135deg, #6C5CE7 0%, #FF6B35 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 1.2rem; letter-spacing: 1px;">RENTAL CARS</span>
+                        <span style="background: linear-gradient(135deg, #6C5CE7 0%, #FF6B35 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 1.2rem; letter-spacing: 1px;"><?php echo htmlspecialchars(getSiteName()); ?></span>
                     </h5>
-                    <p class="footer-text">Your trusted partner for car rentals. We offer the best deals on quality vehicles with exceptional service.</p>
+                    <p class="footer-text"><?php echo htmlspecialchars(getAppConfig('footer_description', 'Your trusted partner for car rentals. We offer the best deals on quality vehicles with exceptional service.')); ?></p>
                 </div>
                 <div class="col-md-4 mb-4">
                     <h5 style="font-weight: 700; margin-bottom: 1rem; color: var(--primary);">Contact Info</h5>
@@ -342,8 +512,8 @@
                     $formatted_phone = getFormattedPhoneNumber();
                     ?>
                     <p class="footer-text" style="margin-bottom: 0.5rem;"><i class="bi bi-telephone-fill" style="color: var(--primary-orange); margin-right: 0.5rem;"></i> <?php echo htmlspecialchars($formatted_phone); ?></p>
-                    <p class="footer-text" style="margin-bottom: 0.5rem;"><i class="bi bi-envelope-fill" style="color: var(--primary-orange); margin-right: 0.5rem;"></i> info@carrental.com</p>
-                    <p class="footer-text"><i class="bi bi-geo-alt-fill" style="color: var(--primary-orange); margin-right: 0.5rem;"></i> Oxford Ave. Cary, NC 27511</p>
+                    <p class="footer-text" style="margin-bottom: 0.5rem;"><i class="bi bi-envelope-fill" style="color: var(--primary-orange); margin-right: 0.5rem;"></i> <?php echo htmlspecialchars(getContactEmail()); ?></p>
+                    <p class="footer-text"><i class="bi bi-geo-alt-fill" style="color: var(--primary-orange); margin-right: 0.5rem;"></i> <?php echo htmlspecialchars(getBusinessAddress()); ?></p>
                 </div>
                 <div class="col-md-4 mb-4">
                     <h5 style="font-weight: 700; margin-bottom: 1rem; color: var(--primary);">Follow Us</h5>
@@ -390,7 +560,7 @@
             </div>
             <hr class="footer-hr">
             <div class="text-center footer-copyright">
-                <p style="margin: 0;">&copy; <?php echo date('Y'); ?> RENTAL CARS. All rights reserved.</p>
+                <p style="margin: 0;">&copy; <?php echo date('Y'); ?> <?php echo htmlspecialchars(getSiteName()); ?>. All rights reserved.</p>
             </div>
         </div>
     </footer>

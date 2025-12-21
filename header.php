@@ -8,7 +8,7 @@
     ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo isset($pageTitle) ? $pageTitle : 'RENTAL CARS - Best Deals on Car Rentals'; ?></title>
+    <title><?php echo isset($pageTitle) ? $pageTitle : getSiteName() . ' - ' . getSiteTagline(); ?></title>
     <link rel="icon" type="image/png" href="<?php echo htmlspecialchars($favicon_path); ?>">
     <link rel="apple-touch-icon" href="<?php echo htmlspecialchars($favicon_path); ?>">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -265,26 +265,13 @@
             justify-content: center;
         }
         
-        .hero-video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-            object-fit: cover;
-        }
-        
         .hero-overlay {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(108, 92, 231, 0.85) 0%, rgba(255, 107, 53, 0.75) 100%);
+            background: linear-gradient(135deg, rgba(108, 92, 231, 0.3) 0%, rgba(255, 107, 53, 0.3) 100%);
             z-index: 2;
         }
         
@@ -363,6 +350,20 @@
             color: var(--dark-text);
             margin-bottom: 3rem;
             text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+                margin-bottom: 2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .section-title {
+                font-size: 1.75rem;
+                margin-bottom: 1.5rem;
+            }
         }
         
         .mobile-sidebar {
@@ -625,10 +626,49 @@
         .main-content {
             margin-left: 280px;
             min-height: 100vh;
+            width: calc(100% - 280px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
         .main-content.no-sidebar {
             margin-left: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        
+        /* Center all main content sections on desktop */
+        @media (min-width: 992px) {
+            .main-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+            }
+            
+            .main-content.no-sidebar {
+                margin-left: 0;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+            }
+            
+            .main-content main {
+                width: 100%;
+                max-width: 1400px;
+                margin-left: auto;
+                margin-right: auto;
+                padding: 0 2rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
         }
         
         .sidebar-toggle {
@@ -712,6 +752,17 @@
             .main-content {
                 margin-left: 0 !important;
                 padding-top: 70px;
+                width: 100% !important;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .main-content main {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
             }
         }
         
@@ -746,6 +797,39 @@
                 width: 35px;
                 height: 35px;
             }
+            
+            .navbar-content {
+                padding: 0.5rem 0.75rem;
+                min-height: 55px;
+            }
+            
+            .container {
+                padding: 0 0.75rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .navbar-content {
+                padding: 0.5rem;
+                min-height: 50px;
+            }
+            
+            .navbar-brand-top .logo-text {
+                font-size: 1rem;
+            }
+            
+            .navbar-brand-top .logo-img {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .container {
+                padding: 0 0.5rem;
+            }
+            
+            main {
+                padding: 1rem 0;
+            }
         }
         
         main {
@@ -754,6 +838,77 @@
         
         .container {
             max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 15px;
+            width: 100%;
+        }
+        
+        /* Desktop/PC Responsive Improvements - Centered Content */
+        @media (min-width: 1400px) {
+            .container {
+                max-width: 1400px;
+                margin-left: auto;
+                margin-right: auto;
+                padding: 0 2rem;
+                width: 100%;
+            }
+            
+            .navbar-content {
+                max-width: 1600px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .main-content {
+                padding-top: 90px;
+            }
+            
+            .main-content.no-sidebar {
+                margin-left: 0;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .main-content main {
+                max-width: 1400px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+        
+        @media (min-width: 1200px) and (max-width: 1399px) {
+            .container {
+                max-width: 1320px;
+                margin-left: auto;
+                margin-right: auto;
+                padding: 0 1.5rem;
+                width: 100%;
+            }
+        }
+        
+        @media (min-width: 992px) {
+            .container {
+                margin-left: auto;
+                margin-right: auto;
+                width: 100%;
+            }
+        }
+        
+        @media (min-width: 992px) {
+            .navbar-nav-top {
+                gap: 2.5rem;
+            }
+            
+            .navbar-brand-top .logo-text {
+                font-size: 1.6rem;
+            }
+            
+            .whatsapp-link {
+                font-size: 1rem;
+            }
         }
         
         /* Theme Toggle */
@@ -1025,6 +1180,284 @@
         .table-borderless td {
             color: var(--primary);
         }
+        
+        /* Global Centering for All Sections on PC */
+        @media (min-width: 992px) {
+            /* Ensure all containers are centered */
+            .container,
+            .home-container,
+            .about-container,
+            .car-detail-container,
+            .footer-container,
+            .contact-page .container {
+                margin-left: auto !important;
+                margin-right: auto !important;
+                width: 100%;
+                max-width: 1400px;
+            }
+            
+            /* Center main content wrapper - PC/Desktop */
+            .main-content {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: flex-start !important;
+            }
+            
+            .main-content.no-sidebar {
+                margin-left: 0 !important;
+                width: 100% !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: flex-start !important;
+            }
+            
+            .main-content main {
+                margin-left: auto !important;
+                margin-right: auto !important;
+                width: 100% !important;
+                max-width: 1400px !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+            }
+            
+            /* Center hero content */
+            .hero-content-wrapper .container {
+                margin-left: auto !important;
+                margin-right: auto !important;
+                width: 100%;
+            }
+            
+            /* Center all page containers */
+            .home-container,
+            .about-container,
+            .car-detail-container {
+                margin-left: auto !important;
+                margin-right: auto !important;
+                width: 100%;
+                max-width: 1400px;
+            }
+        }
+        
+        /* Mobile centering */
+        @media (max-width: 991px) {
+            .main-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .main-content main {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .container,
+            .home-container,
+            .about-container,
+            .car-detail-container,
+            .footer-container,
+            .contact-page .container {
+                margin-left: auto;
+                margin-right: auto;
+                width: 100%;
+            }
+        }
+        
+        /* Mobile Responsive Improvements */
+        @media (max-width: 576px) {
+            /* Improve touch targets */
+            .btn-purple,
+            .btn-orange {
+                min-height: 44px;
+                padding: 0.75rem 1.5rem;
+            }
+            
+            /* Better spacing on mobile */
+            .card {
+                margin-bottom: 1rem;
+            }
+            
+            /* Improve form inputs on mobile */
+            .form-control,
+            .form-select {
+                font-size: 16px; /* Prevents zoom on iOS */
+                padding: 0.75rem;
+            }
+            
+            /* Better modal on mobile */
+            .modal-dialog {
+                margin: 0.5rem;
+            }
+            
+            .modal-content {
+                border-radius: 12px;
+            }
+            
+            /* Improve car cards on mobile */
+            .car-card-body {
+                padding: 1rem;
+            }
+            
+            .car-title {
+                font-size: 1.1rem;
+            }
+            
+            .car-price {
+                font-size: 1.25rem;
+            }
+            
+            /* Better breadcrumb on mobile */
+            .breadcrumb {
+                font-size: 0.85rem;
+            }
+        }
+        
+        /* Specific optimization for 428px width (iPhone 12/13 Pro Max) */
+        @media (max-width: 428px) {
+            .container {
+                padding: 0 0.75rem;
+                max-width: 100%;
+            }
+            
+            .navbar-content {
+                padding: 0.5rem 0.75rem;
+            }
+            
+            .navbar-brand-top .logo-text {
+                font-size: 0.95rem;
+            }
+            
+            .navbar-brand-top .logo-img {
+                width: 32px;
+                height: 32px;
+            }
+            
+            .hero-section-video {
+                height: 55vh !important;
+                min-height: 400px !important;
+                width: 100% !important;
+            }
+            
+            
+            .hero-title {
+                font-size: 1.6rem !important;
+                padding: 0 0.5rem;
+                line-height: 1.3;
+            }
+            
+            .hero-subtitle {
+                font-size: 0.95rem !important;
+                padding: 0 1rem;
+                line-height: 1.6;
+            }
+            
+            .hero-content-wrapper {
+                padding: 1.25rem 0;
+                width: 100% !important;
+            }
+            
+            /* Prevent horizontal scroll */
+            body {
+                overflow-x: hidden;
+                width: 100%;
+            }
+            
+            * {
+                max-width: 100%;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+                margin-bottom: 1.75rem;
+                padding: 0 0.5rem;
+            }
+            
+            .btn-orange,
+            .btn-purple {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.95rem;
+                min-height: 44px;
+            }
+            
+            .card {
+                border-radius: 10px;
+            }
+            
+            .filter-card {
+                padding: 1rem !important;
+            }
+            
+            .filter-card .form-label {
+                font-size: 0.9rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .filter-card .form-select {
+                font-size: 16px;
+                padding: 0.7rem;
+            }
+            
+            .car-card {
+                margin-bottom: 1.25rem;
+            }
+            
+            .car-image {
+                height: 220px;
+            }
+            
+            .car-card-body {
+                padding: 1rem;
+            }
+            
+            .car-title {
+                font-size: 1.15rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .car-price {
+                font-size: 1.3rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .car-features {
+                gap: 0.75rem;
+                margin-bottom: 1rem;
+                flex-wrap: wrap;
+            }
+            
+            .car-feature {
+                font-size: 0.85rem;
+            }
+            
+            .modal-dialog {
+                margin: 0.75rem;
+            }
+            
+            .modal-content {
+                border-radius: 12px;
+            }
+            
+            .modal-header,
+            .modal-body {
+                padding: 1.25rem;
+            }
+            
+            .form-control,
+            .form-select {
+                font-size: 16px;
+                padding: 0.7rem;
+            }
+            
+            .breadcrumb {
+                font-size: 0.85rem;
+                margin-bottom: 1rem;
+            }
+        }
     </style>
     <script>
         // Exchange rates from database (output by PHP)
@@ -1047,7 +1480,7 @@
         <div style="padding: 1.5rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                 <a href="index.php" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
-                    <img src="<?php echo htmlspecialchars($logo_path); ?>" alt="RENTAL CARS Logo" style="width: 40px; height: 40px; border-radius: 50%; object-fit: contain;" class="logo-spin" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <img src="<?php echo htmlspecialchars($logo_path); ?>" alt="<?php echo htmlspecialchars(getSiteName()); ?> Logo" style="width: 40px; height: 40px; border-radius: 50%; object-fit: contain;" class="logo-spin" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                     <svg width="40" height="40" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-spin" style="display: none;">
                         <rect width="45" height="45" rx="10" fill="url(#mobileLogoGradient)"/>
                         <path d="M22.5 12L28 18H26V28H19V18H17L22.5 12Z" fill="white"/>
@@ -1059,9 +1492,8 @@
                             </linearGradient>
                         </defs>
                     </svg>
-                    <span style="font-size: 1.2rem; font-weight: 800; letter-spacing: 1px;">
-                        <span style="color: var(--primary-purple);">RENTAL</span> 
-                        <span style="color: var(--primary-orange);">CARS</span>
+                    <span style="font-size: 1.2rem; font-weight: 800; letter-spacing: 1px; color: var(--primary);">
+                        <?php echo htmlspecialchars(getSiteName()); ?>
                     </span>
                 </a>
                 <button id="close-mobile-sidebar" style="background: none; border: none; color: var(--primary); cursor: pointer; font-size: 1.5rem;">
@@ -1119,7 +1551,7 @@
     <nav class="top-navbar">
         <div class="navbar-content">
             <a href="index.php" class="navbar-brand-top">
-                <img src="<?php echo htmlspecialchars($logo_path); ?>" alt="RENTAL CARS Logo" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <img src="<?php echo htmlspecialchars($logo_path); ?>" alt="<?php echo htmlspecialchars(getSiteName()); ?> Logo" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                 <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-img" style="display: none;">
                     <rect width="45" height="45" rx="10" fill="url(#logoGradient)"/>
                     <path d="M22.5 12L28 18H26V28H19V18H17L22.5 12Z" fill="white"/>
@@ -1131,9 +1563,8 @@
                         </linearGradient>
                     </defs>
                 </svg>
-                <span class="logo-text">
-                    <span style="color: var(--primary-purple);">RENTAL</span> 
-                    <span style="color: var(--primary-orange);">CARS</span>
+                <span class="logo-text" style="color: var(--primary);">
+                    <?php echo htmlspecialchars(getSiteName()); ?>
                 </span>
             </a>
             
@@ -1211,7 +1642,7 @@
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <a href="index.php" class="sidebar-brand">
-            <img src="assets/images/RENTAL-CARS.png" alt="RENTAL CARS Logo" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <img src="<?php echo htmlspecialchars(getLogoPath()); ?>" alt="<?php echo htmlspecialchars(getSiteName()); ?> Logo" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
             <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-img" style="display: none;">
                 <rect width="45" height="45" rx="10" fill="url(#logoGradient)"/>
                 <path d="M22.5 12L28 18H26V28H19V18H17L22.5 12Z" fill="white"/>
@@ -1223,9 +1654,8 @@
                     </linearGradient>
                 </defs>
             </svg>
-            <span class="logo-text">
-                <span style="color: var(--primary-purple);">RENTAL</span> 
-                <span style="color: var(--primary-orange);">CARS</span>
+            <span class="logo-text" style="color: var(--primary);">
+                <?php echo htmlspecialchars(getSiteName()); ?>
             </span>
         </a>
         
@@ -1275,7 +1705,7 @@
     <?php endif; ?>
     
     <!-- Main Content -->
-    <div class="main-content <?php echo $isAdmin ? 'no-sidebar' : ''; ?>">
-        <main>
+    <div class="main-content <?php echo $isAdmin ? 'no-sidebar' : 'no-sidebar'; ?>">
+        <main style="width: 100%; max-width: 1400px; margin-left: auto; margin-right: auto; display: flex; flex-direction: column; align-items: center;">
 
 

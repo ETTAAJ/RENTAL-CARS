@@ -1,7 +1,7 @@
 <?php
 require_once 'config.php';
 
-$pageTitle = 'Car Details - RENTAL CARS';
+$pageTitle = 'Car Details - ' . getSiteName();
 include 'header.php';
 
 if (!isset($_GET['id']) || empty($_GET['id'])) {
@@ -62,7 +62,412 @@ $stmt->close();
 $conn->close();
 ?>
 
-<div class="container">
+<style>
+    /* Global Centering for All Content */
+    .car-detail-container {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .car-detail-row {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .row {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    /* Desktop/PC Responsive Design for Car Detail - Centered */
+    @media (min-width: 1200px) {
+        .car-detail-container {
+            max-width: 1400px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            padding: 0 2rem;
+            width: 100%;
+        }
+        
+        .car-detail-row {
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .car-detail-row {
+            gap: 3rem;
+        }
+        
+        .car-image-main {
+            height: 500px !important;
+            margin: 0 auto;
+        }
+        
+        .car-thumbnail {
+            width: 120px !important;
+            height: 100px !important;
+        }
+        
+        .car-title-detail {
+            font-size: 3rem !important;
+        }
+        
+        .car-price-detail {
+            font-size: 2.5rem !important;
+        }
+        
+        .car-specs-grid {
+            gap: 1.5rem !important;
+            margin: 0 auto;
+        }
+        
+        .car-spec-item {
+            padding: 1.5rem !important;
+        }
+        
+        .row {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+    
+    @media (min-width: 992px) and (max-width: 1199px) {
+        .car-detail-container {
+            max-width: 1200px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            padding: 0 1.5rem;
+            width: 100%;
+        }
+        
+        .car-detail-row {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .car-image-main {
+            height: 450px !important;
+            margin: 0 auto;
+        }
+        
+        .car-title-detail {
+            font-size: 2.5rem !important;
+        }
+        
+        .row {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+    
+    @media (max-width: 991px) {
+        .car-detail-container {
+            padding: 0 1rem;
+            max-width: 100% !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            width: 100%;
+        }
+        
+        .car-detail-row {
+            gap: 2rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .car-image-main {
+            height: 350px !important;
+            margin: 0 auto;
+        }
+        
+        .car-title-detail {
+            font-size: 2rem !important;
+        }
+        
+        .car-price-detail {
+            font-size: 1.75rem !important;
+        }
+        
+        .row {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .car-detail-container {
+            padding: 0 0.75rem;
+            max-width: 100% !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            width: 100%;
+        }
+        
+        .car-detail-row {
+            margin: 0 auto;
+        }
+        
+        .car-detail-row .col-lg-6 {
+            width: 100% !important;
+            padding: 0;
+            margin-bottom: 1.5rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .car-image-main {
+            height: 300px !important;
+            border-radius: 12px !important;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        .car-title-detail {
+            font-size: 1.75rem !important;
+            margin-bottom: 0.75rem !important;
+            text-align: center;
+        }
+        
+        .car-price-detail {
+            font-size: 1.5rem !important;
+            text-align: center;
+        }
+        
+        .car-thumbnail {
+            width: 80px !important;
+            height: 70px !important;
+        }
+        
+        .car-spec-item {
+            padding: 0.75rem !important;
+        }
+        
+        .car-specs-grid {
+            margin: 0 auto;
+        }
+        
+        .car-specs-grid .col-6 {
+            width: 50% !important;
+            padding: 0.5rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn-purple {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+        }
+        
+        .modal-content {
+            margin: 1rem auto;
+        }
+        
+        .row {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .car-detail-container {
+            padding: 0 0.5rem;
+            max-width: 100% !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            width: 100%;
+        }
+        
+        .car-detail-row {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .car-image-main {
+            height: 250px !important;
+            margin: 0 auto;
+        }
+        
+        .car-title-detail {
+            font-size: 1.5rem !important;
+            text-align: center;
+        }
+        
+        .car-price-detail {
+            font-size: 1.25rem !important;
+            text-align: center;
+        }
+        
+        .car-thumbnail {
+            width: 70px !important;
+            height: 60px !important;
+        }
+        
+        .car-spec-item {
+            padding: 0.5rem !important;
+            font-size: 0.9rem;
+        }
+        
+        .car-specs-grid {
+            margin: 0 auto;
+        }
+        
+        .car-specs-grid .col-6 {
+            padding: 0.25rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .modal-dialog {
+            margin: 0.5rem auto;
+        }
+        
+        .modal-content {
+            border-radius: 12px;
+            margin: 0 auto;
+        }
+        
+        .row {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+    
+    /* Specific optimization for 428px width (iPhone 12/13 Pro Max) */
+    @media (max-width: 428px) {
+        .car-detail-container {
+            padding: 0 0.75rem;
+            max-width: 100% !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            width: 100%;
+        }
+        
+        .car-detail-row {
+            gap: 1.5rem;
+            margin: 0 auto;
+        }
+        
+        .car-detail-row .col-lg-6 {
+            width: 100% !important;
+            padding: 0;
+            margin-bottom: 1.5rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .car-image-main {
+            height: 280px !important;
+            border-radius: 12px !important;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        .car-thumbnail {
+            width: 75px !important;
+            height: 65px !important;
+            border-radius: 6px !important;
+        }
+        
+        .car-title-detail {
+            font-size: 1.6rem !important;
+            margin-bottom: 0.75rem !important;
+            line-height: 1.3;
+            text-align: center;
+        }
+        
+        .car-price-detail {
+            font-size: 1.4rem !important;
+            margin-bottom: 1.25rem !important;
+            text-align: center;
+        }
+        
+        .car-specs-grid {
+            gap: 0.75rem !important;
+            margin: 0 auto;
+        }
+        
+        .car-specs-grid .col-6 {
+            width: 100% !important;
+            padding: 0.5rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .car-spec-item {
+            padding: 0.85rem !important;
+        }
+        
+        .car-spec-item i {
+            font-size: 1.3rem !important;
+        }
+        
+        .car-spec-item div {
+            font-size: 0.9rem;
+        }
+        
+        .car-spec-item div:first-child {
+            font-size: 0.8rem;
+        }
+        
+        .btn-purple {
+            padding: 0.85rem 1.5rem;
+            font-size: 1rem;
+            min-height: 48px;
+            margin-bottom: 1.25rem;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+        
+        .modal-dialog {
+            margin: 0.75rem auto;
+        }
+        
+        .modal-content {
+            margin: 0 auto;
+        }
+        
+        .modal-header {
+            padding: 1.25rem;
+        }
+        
+        .modal-body {
+            padding: 1.25rem;
+        }
+        
+        .modal-title {
+            font-size: 1.3rem;
+        }
+        
+        .form-label {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control {
+            font-size: 16px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .alert {
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        #total-price {
+            font-size: 1.1rem;
+        }
+        
+        .row {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+</style>
+
+<div class="container car-detail-container" style="margin-left: auto; margin-right: auto; width: 100%; max-width: 1400px;">
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mb-4" style="--bs-breadcrumb-divider: ' / ';">
         <ol class="breadcrumb">
@@ -71,7 +476,7 @@ $conn->close();
         </ol>
     </nav>
 
-    <div class="row mb-5">
+    <div class="row mb-5 car-detail-row" style="margin-left: auto; margin-right: auto;">
         <!-- Car Images -->
         <div class="col-lg-6 mb-4">
             <div class="position-relative mb-3">
@@ -79,7 +484,7 @@ $conn->close();
                     <span class="discount-badge"><?php echo formatDiscount($car['discount']); ?>% OFF</span>
                 <?php endif; ?>
                 <img src="<?php echo htmlspecialchars($car['image']); ?>" 
-                     class="img-fluid rounded" 
+                     class="img-fluid rounded car-image-main" 
                      style="width: 100%; height: 400px; object-fit: cover; border-radius: 16px;"
                      alt="<?php echo htmlspecialchars($car['name']); ?>"
                      id="mainCarImage"
@@ -88,17 +493,17 @@ $conn->close();
             <!-- Thumbnails -->
             <div class="d-flex gap-2">
                 <img src="<?php echo htmlspecialchars($car['image']); ?>" 
-                     class="img-thumbnail" 
+                     class="img-thumbnail car-thumbnail" 
                      style="width: 100px; height: 80px; object-fit: cover; cursor: pointer; border-radius: 8px;"
                      onclick="document.getElementById('mainCarImage').src = this.src"
                      onerror="this.src='https://via.placeholder.com/100x80?text=Car'">
                 <img src="<?php echo htmlspecialchars($car['image']); ?>" 
-                     class="img-thumbnail" 
+                     class="img-thumbnail car-thumbnail" 
                      style="width: 100px; height: 80px; object-fit: cover; cursor: pointer; border-radius: 8px;"
                      onclick="document.getElementById('mainCarImage').src = this.src"
                      onerror="this.src='https://via.placeholder.com/100x80?text=Car'">
                 <img src="<?php echo htmlspecialchars($car['image']); ?>" 
-                     class="img-thumbnail" 
+                     class="img-thumbnail car-thumbnail" 
                      style="width: 100px; height: 80px; object-fit: cover; cursor: pointer; border-radius: 8px;"
                      onclick="document.getElementById('mainCarImage').src = this.src"
                      onerror="this.src='https://via.placeholder.com/100x80?text=Car'">
@@ -107,7 +512,7 @@ $conn->close();
 
         <!-- Car Details -->
         <div class="col-lg-6">
-            <h1 style="font-size: 2.5rem; font-weight: 800; color: var(--dark-text); margin-bottom: 1rem;">
+            <h1 class="car-title-detail" style="font-size: 2.5rem; font-weight: 800; color: var(--dark-text); margin-bottom: 1rem;">
                 <?php echo htmlspecialchars($car['name']); ?>
             </h1>
             
@@ -118,7 +523,7 @@ $conn->close();
                         <span class="price-currency">MAD</span>
                     </span>
                 <?php endif; ?>
-                <span class="price-discounted" style="font-size: 2rem;" data-price-mad="<?php echo $discountedPrice; ?>">
+                <span class="price-discounted car-price-detail" style="font-size: 2rem;" data-price-mad="<?php echo $discountedPrice; ?>">
                     <span class="price-amount"><?php echo formatPrice($discountedPrice); ?></span>
                     <span class="price-currency">MAD</span> / day
                 </span>
@@ -127,9 +532,9 @@ $conn->close();
             <!-- Technical Specifications -->
             <div class="mb-4">
                 <h5 style="font-weight: 700; margin-bottom: 1.5rem; color: var(--dark-text);">Technical Specification</h5>
-                <div class="row g-3">
+                <div class="row g-3 car-specs-grid">
                     <div class="col-6">
-                        <div style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px;">
+                        <div class="car-spec-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px;">
                             <i class="bi bi-gear-fill" style="font-size: 1.5rem; color: var(--primary-purple);"></i>
                             <div>
                                 <div style="font-size: 0.85rem; color: var(--muted);">Gear Box</div>
@@ -138,7 +543,7 @@ $conn->close();
                         </div>
                     </div>
                     <div class="col-6">
-                        <div style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px;">
+                        <div class="car-spec-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px;">
                             <i class="bi bi-fuel-pump-fill" style="font-size: 1.5rem; color: var(--primary-purple);"></i>
                             <div>
                                 <div style="font-size: 0.85rem; color: var(--muted);">Fuel</div>
@@ -147,7 +552,7 @@ $conn->close();
                         </div>
                     </div>
                     <div class="col-6">
-                        <div style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px;">
+                        <div class="car-spec-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px;">
                             <i class="bi bi-door-open" style="font-size: 1.5rem; color: var(--primary-purple);"></i>
                             <div>
                                 <div style="font-size: 0.85rem; color: var(--muted);">Doors</div>
@@ -156,7 +561,7 @@ $conn->close();
                         </div>
                     </div>
                     <div class="col-6">
-                        <div style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px;">
+                        <div class="car-spec-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px;">
                             <i class="bi bi-snow" style="font-size: 1.5rem; color: var(--primary-purple);"></i>
                             <div>
                                 <div style="font-size: 0.85rem; color: var(--muted);">Air Conditioner</div>
@@ -165,7 +570,7 @@ $conn->close();
                         </div>
                     </div>
                     <div class="col-6">
-                        <div style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px;">
+                        <div class="car-spec-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px;">
                             <i class="bi bi-people-fill" style="font-size: 1.5rem; color: var(--primary-purple);"></i>
                             <div>
                                 <div style="font-size: 0.85rem; color: var(--muted);">Seats</div>
@@ -174,7 +579,7 @@ $conn->close();
                         </div>
                     </div>
                     <div class="col-6">
-                        <div style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px;">
+                        <div class="car-spec-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px;">
                             <i class="bi bi-speedometer2" style="font-size: 1.5rem; color: var(--primary-purple);"></i>
                             <div>
                                 <div style="font-size: 0.85rem; color: var(--muted);">Distance</div>

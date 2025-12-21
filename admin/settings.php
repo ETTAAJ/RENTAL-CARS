@@ -56,11 +56,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             // Generate filename
             $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-            $filename = 'RENTAL-CARS.' . $extension;
+            // CUSTOMIZATION: Logo filename - change in /config/app.php
+            $logoName = 'logo-placeholder'; // Default from config
+            $filename = $logoName . '.' . $extension;
             $uploadPath = $uploadDir . $filename;
             
-            // Delete old logo if exists
-            $oldLogo = $uploadDir . 'RENTAL-CARS.*';
+            // Delete old logo if exists (supports multiple formats)
+            $oldLogo = $uploadDir . $logoName . '.*';
             $oldFiles = glob($oldLogo);
             foreach ($oldFiles as $oldFile) {
                 if (is_file($oldFile)) {
@@ -135,7 +137,8 @@ $madToEur = $settings['mad_to_eur'] ?? 0.092;
 $madToUsd = $settings['mad_to_usd'] ?? 0.10;
 $defaultCurrency = $settings['default_currency'] ?? 'MAD';
 $whatsappNumber = $settings['whatsapp_number'] ?? WHATSAPP_NUMBER;
-$logoPath = $settings['logo_path'] ?? 'assets/images/RENTAL-CARS.png';
+// CUSTOMIZATION: Default logo path - change in /config/app.php
+$logoPath = $settings['logo_path'] ?? getAppConfig('logo_path', 'assets/images/logo-placeholder.png');
 $facebookUrl = $settings['facebook_url'] ?? '';
 $twitterUrl = $settings['twitter_url'] ?? '';
 $instagramUrl = $settings['instagram_url'] ?? '';
@@ -145,7 +148,8 @@ $youtubeUrl = $settings['youtube_url'] ?? '';
 // Check if logo file exists
 $logoFullPath = '../' . $logoPath;
 if (!file_exists($logoFullPath)) {
-    $logoPath = 'assets/images/RENTAL-CARS.png'; // Default
+    // CUSTOMIZATION: Default logo path - change in /config/app.php
+    $logoPath = getAppConfig('logo_path', 'assets/images/logo-placeholder.png');
 }
 
 $conn->close();
@@ -194,7 +198,7 @@ $conn->close();
                                  alt="Current Logo" 
                                  id="currentLogo"
                                  style="max-width: 200px; height: auto; border-radius: 8px; border: 1px solid #ddd; padding: 5px; background: white;"
-                                 onerror="this.src='../assets/images/RENTAL-CARS.png'">
+                                 onerror="this.src='../<?php echo htmlspecialchars(getAppConfig('logo_path', 'assets/images/logo-placeholder.png')); ?>'">
                         </div>
                         <div id="logoPreview" class="mt-3" style="display: none;">
                             <p class="mb-2"><strong>New Logo Preview:</strong></p>
@@ -248,8 +252,8 @@ $conn->close();
                         <input type="text" class="form-control" id="whatsapp_number" name="whatsapp_number" 
                                required 
                                value="<?php echo htmlspecialchars($whatsappNumber); ?>"
-                               placeholder="212769323828">
-                        <small class="text-muted">Format: Country code + number (no + or spaces). Example: 212769323828</small>
+                               placeholder="<?php echo htmlspecialchars(getAppConfig('whatsapp_number', '1234567890')); ?>">
+                        <small class="text-muted">Format: Country code + number (no + or spaces). Example: <?php echo htmlspecialchars(getAppConfig('whatsapp_number', '1234567890')); ?></small>
                     </div>
 
                     <hr class="my-4">

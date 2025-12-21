@@ -4,6 +4,10 @@
     <?php
     // Include config to get logo path for favicon
     require_once __DIR__ . '/../config.php';
+    
+    // Require admin login for all admin pages
+    requireAdminLogin();
+    
     $favicon_path = getLogoPath();
     ?>
     <meta charset="UTF-8">
