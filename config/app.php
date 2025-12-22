@@ -176,12 +176,13 @@ return [
      * Default admin username and password
      * IMPORTANT: Change these after first login!
      * 
-     * CUSTOMIZATION: You can change the default admin credentials here
-     * Note: Password should be hashed using password_hash() in production
+     * NOTE: Default credentials are documented in README.md
+     * For security, these are not stored in code but created during installation
      */
     'admin' => [
         'default_username' => 'admin',
-        'default_password' => 'admin123', // Change this after first login!
+        // Password is not stored here for security reasons
+        // Default password is documented in README.md
     ],
     
     // ============================================

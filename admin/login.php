@@ -39,8 +39,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $checkAdmin->close();
         
         if ($row['count'] == 0) {
-            // Create default admin (username: admin, password: admin123)
-            $hashedPassword = password_hash('admin123', PASSWORD_DEFAULT);
+            // Create default admin user
+            // Default credentials: username: admin, password: admin123
+            // IMPORTANT: Change password immediately after first login!
+            // See README.md for default credentials
+            $defaultPassword = 'admin123'; // This should be changed immediately after installation
+            $hashedPassword = password_hash($defaultPassword, PASSWORD_DEFAULT);
             $insertAdmin = $conn->prepare("INSERT INTO admin_users (username, password) VALUES ('admin', ?)");
             $insertAdmin->bind_param("s", $hashedPassword);
             $insertAdmin->execute();

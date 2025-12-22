@@ -12,32 +12,37 @@ $conn = getDBConnection();
 
 // Handle delete action
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
+    // Validate the ID is numeric and positive
     $deleteId = intval($_GET['delete']);
     
-    // First, get the car image path to delete the file
-    $stmt = $conn->prepare("SELECT image FROM cars WHERE id = ?");
-    $stmt->bind_param("i", $deleteId);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $car = $result->fetch_assoc();
-    $stmt->close();
-    
-    // Delete the car from database
-    $stmt = $conn->prepare("DELETE FROM cars WHERE id = ?");
-    $stmt->bind_param("i", $deleteId);
-    if ($stmt->execute()) {
-        // Delete the image file if it exists and is in assets/images folder
-        if ($car && isset($car['image']) && strpos($car['image'], 'assets/images/') === 0) {
-            $imagePath = '../' . $car['image'];
-            if (file_exists($imagePath)) {
-                unlink($imagePath);
-            }
-        }
-        $successMessage = "Car deleted successfully!";
+    if ($deleteId <= 0) {
+        $errorMessage = "Invalid car ID.";
     } else {
-        $errorMessage = "Failed to delete car.";
+        // First, get the car image path to delete the file
+        $stmt = $conn->prepare("SELECT image FROM cars WHERE id = ?");
+        $stmt->bind_param("i", $deleteId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $car = $result->fetch_assoc();
+        $stmt->close();
+        
+        // Delete the car from database
+        $stmt = $conn->prepare("DELETE FROM cars WHERE id = ?");
+        $stmt->bind_param("i", $deleteId);
+        if ($stmt->execute()) {
+            // Delete the image file if it exists and is in assets/images folder
+            if ($car && isset($car['image']) && strpos($car['image'], 'assets/images/') === 0) {
+                $imagePath = '../' . $car['image'];
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+            }
+            $successMessage = "Car deleted successfully!";
+        } else {
+            $errorMessage = "Failed to delete car.";
+        }
+        $stmt->close();
     }
-    $stmt->close();
 }
 
 // Get filter parameters

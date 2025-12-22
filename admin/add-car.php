@@ -13,6 +13,10 @@ $errorMessage = '';
 $successMessage = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Verify CSRF token
+    if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+        $errorMessage = 'Invalid security token. Please try again.';
+    } else {
     $name = trim($_POST['name'] ?? '');
     $price = floatval($_POST['price'] ?? 0);
     $discount = floatval($_POST['discount'] ?? 0);
@@ -30,9 +34,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ];
     $specificationsJson = json_encode($specifications);
     
-    // Validation
-    if (empty($name) || $price <= 0) {
-        $errorMessage = 'Please fill in all required fields (Name and Price).';
+    // Validation and sanitization
+    $name = filter_var($name, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+    $description = filter_var($description, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+    $availability = in_array($availability, ['available', 'unavailable']) ? $availability : 'available';
+    
+    if (empty($name) || strlen($name) > 255) {
+        $errorMessage = 'Car name is required and must be less than 255 characters.';
+    } elseif ($price <= 0 || $price > 999999.99) {
+        $errorMessage = 'Price must be between 0.01 and 999999.99.';
     } elseif ($discount < 0 || $discount > 100) {
         $errorMessage = 'Discount must be between 0 and 100.';
     } elseif (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
@@ -114,6 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         }
     }
+    }
 }
 
 $conn->close();
@@ -145,6 +156,7 @@ $conn->close();
         <div class="card">
             <div class="card-body">
                 <form method="POST" action="" enctype="multipart/form-data">
+                    <?php echo getCSRFTokenField(); ?>
                     <div class="mb-3">
                         <label for="name" class="form-label">Car Name *</label>
                         <input type="text" class="form-control" id="name" name="name" required 
