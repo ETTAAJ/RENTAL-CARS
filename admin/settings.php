@@ -37,8 +37,11 @@ if ($checkColumn->num_rows == 0) {
     $firstCurrency = $conn->query("SELECT id FROM currencies ORDER BY id LIMIT 1");
     if ($firstCurrency && $firstCurrency->num_rows > 0) {
         $firstRow = $firstCurrency->fetch_assoc();
-        $firstId = $firstRow['id'];
-        $conn->query("UPDATE currencies SET is_base = 1, rate_to_base = 1.0 WHERE id = $firstId");
+        $firstId = intval($firstRow['id']);
+        $updateStmt = $conn->prepare("UPDATE currencies SET is_base = 1, rate_to_base = 1.0 WHERE id = ?");
+        $updateStmt->bind_param("i", $firstId);
+        $updateStmt->execute();
+        $updateStmt->close();
     }
 }
 
@@ -154,6 +157,10 @@ if (isset($_GET['action']) && isset($_GET['currency_id'])) {
 
 // Handle Currency Add/Edit
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['currency_action'])) {
+    // Verify CSRF token
+    if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+        $errorMessage = 'Invalid security token. Please try again.';
+    } else {
     $currencyAction = $_POST['currency_action'];
     $currencyCode = strtoupper(trim($_POST['currency_code'] ?? ''));
     $currencyName = trim($_POST['currency_name'] ?? '');
@@ -162,13 +169,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['currency_action'])) {
     $currencyId = isset($_POST['currency_id']) ? intval($_POST['currency_id']) : 0;
     $isBase = isset($_POST['is_base']) ? intval($_POST['is_base']) : 0;
     
-    // Validation
+    // Validation and sanitization
+    $currencyCode = strtoupper(trim(filter_var($currencyCode, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES)));
+    $currencyName = trim(filter_var($currencyName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES));
+    $currencySymbol = trim(filter_var($currencySymbol, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES));
+    
     if (empty($currencyCode) || empty($currencyName)) {
         $errorMessage = "Currency code and name are required.";
-    } elseif (strlen($currencyCode) > 10) {
-        $errorMessage = "Currency code must be 10 characters or less.";
-    } elseif ($currencyRate <= 0) {
-        $errorMessage = "Exchange rate must be greater than 0.";
+    } elseif (strlen($currencyCode) > 10 || strlen($currencyCode) < 2) {
+        $errorMessage = "Currency code must be between 2 and 10 characters.";
+    } elseif (!preg_match('/^[A-Z]{2,10}$/', $currencyCode)) {
+        $errorMessage = "Currency code must contain only uppercase letters.";
+    } elseif (strlen($currencyName) > 100) {
+        $errorMessage = "Currency name must be less than 100 characters.";
+    } elseif ($currencyRate <= 0 || $currencyRate > 999999.999999) {
+        $errorMessage = "Exchange rate must be greater than 0 and less than 999999.999999.";
     } else {
         if ($currencyAction === 'add') {
             // Check if code already exists
@@ -214,8 +229,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['currency_action'])) {
                 if ($isBase && (!$oldCurrency || $oldCurrency['is_base'] != 1)) {
                     // Calculate conversion factor if changing base
                     if ($oldCurrency && $oldCurrency['rate_to_base'] > 0) {
-                        $conversionFactor = $oldCurrency['rate_to_base'];
-                        $conn->query("UPDATE currencies SET rate_to_base = rate_to_base / $conversionFactor");
+                        $conversionFactor = floatval($oldCurrency['rate_to_base']);
+                        $updateRatesStmt = $conn->prepare("UPDATE currencies SET rate_to_base = rate_to_base / ?");
+                        $updateRatesStmt->bind_param("d", $conversionFactor);
+                        $updateRatesStmt->execute();
+                        $updateRatesStmt->close();
                     }
                     $conn->query("UPDATE currencies SET is_base = 0");
                     $currencyRate = 1.0;
@@ -239,21 +257,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['currency_action'])) {
         }
         skip_edit:
     }
+    }
 }
 
-// Handle form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// Handle form submission (general settings)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['currency_action'])) {
+    // Verify CSRF token
+    if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+        $errorMessage = 'Invalid security token. Please try again.';
+    } else {
     $baseToEur = floatval($_POST['base_to_eur'] ?? 0.92);
     $baseToUsd = floatval($_POST['base_to_usd'] ?? 1.0);
     $defaultCurrency = $_POST['default_currency'] ?? 'USD';
-    $whatsappNumber = trim($_POST['whatsapp_number'] ?? '');
+    $whatsappNumber = trim(filter_var($_POST['whatsapp_number'] ?? '', FILTER_SANITIZE_STRING));
+    // Validate WhatsApp number (digits only)
+    $whatsappNumber = preg_replace('/[^0-9]/', '', $whatsappNumber);
     
-    // Social media links
-    $facebookUrl = trim($_POST['facebook_url'] ?? '');
-    $twitterUrl = trim($_POST['twitter_url'] ?? '');
-    $instagramUrl = trim($_POST['instagram_url'] ?? '');
-    $linkedinUrl = trim($_POST['linkedin_url'] ?? '');
-    $youtubeUrl = trim($_POST['youtube_url'] ?? '');
+    // Social media links - validate URLs
+    $facebookUrl = filter_var(trim($_POST['facebook_url'] ?? ''), FILTER_VALIDATE_URL) ?: '';
+    $twitterUrl = filter_var(trim($_POST['twitter_url'] ?? ''), FILTER_VALIDATE_URL) ?: '';
+    $instagramUrl = filter_var(trim($_POST['instagram_url'] ?? ''), FILTER_VALIDATE_URL) ?: '';
+    $linkedinUrl = filter_var(trim($_POST['linkedin_url'] ?? ''), FILTER_VALIDATE_URL) ?: '';
+    $youtubeUrl = filter_var(trim($_POST['youtube_url'] ?? ''), FILTER_VALIDATE_URL) ?: '';
     
     // Handle logo upload
     $logoPath = '';
@@ -301,10 +326,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     
+    // Validate WhatsApp number
+    if (empty($whatsappNumber) || strlen($whatsappNumber) < 10 || strlen($whatsappNumber) > 15) {
+        $errorMessage = 'WhatsApp number must be between 10 and 15 digits.';
+    }
+    
     // Validate
     if (empty($errorMessage)) {
-        if ($baseToEur <= 0 || $baseToUsd <= 0) {
-            $errorMessage = 'Exchange rates must be greater than 0.';
+        if ($baseToEur <= 0 || $baseToEur > 999999.999999 || $baseToUsd <= 0 || $baseToUsd > 999999.999999) {
+            $errorMessage = 'Exchange rates must be greater than 0 and less than 999999.999999.';
         } else {
             // Validate default currency exists in currencies table
             $checkCurrency = $conn->prepare("SELECT id FROM currencies WHERE code = ? AND is_active = 1");
@@ -353,6 +383,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $checkCurrency->close();
         }
     }
+    }
 }
 
 // Load current settings
@@ -383,7 +414,11 @@ foreach ($currencies as $curr) {
 if (!$baseCurrency && !empty($currencies)) {
     // If no base set, set first currency as base
     $baseCurrency = $currencies[0];
-    $conn->query("UPDATE currencies SET is_base = 1, rate_to_base = 1.0 WHERE id = " . $baseCurrency['id']);
+    $baseId = intval($baseCurrency['id']);
+    $setBaseStmt = $conn->prepare("UPDATE currencies SET is_base = 1, rate_to_base = 1.0 WHERE id = ?");
+    $setBaseStmt->bind_param("i", $baseId);
+    $setBaseStmt->execute();
+    $setBaseStmt->close();
     $baseCurrency['is_base'] = 1;
     $baseCurrency['rate_to_base'] = 1.0;
 }
@@ -450,6 +485,7 @@ $conn->close();
         <div class="card">
             <div class="card-body">
                 <form method="POST" action="" enctype="multipart/form-data">
+                    <?php echo getCSRFTokenField(); ?>
                     <!-- Logo Settings -->
                     <h5 class="mb-3" style="color: #6C5CE7; font-weight: 700;">
                         <i class="bi bi-image"></i> Logo Settings
@@ -688,6 +724,7 @@ $conn->close();
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <form method="POST" action="">
+                                    <?php echo getCSRFTokenField(); ?>
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="currencyModalLabel">
                                             <i class="bi bi-currency-exchange"></i> 

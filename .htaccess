@@ -1,0 +1,38 @@
+# Protect sensitive files and directories
+<FilesMatch "^(config\.php|config\.app\.php|\.htaccess|\.git|\.gitignore|README\.md|CUSTOMIZATION_GUIDE\.md)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protect config directory
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^config/ - [F,L]
+</IfModule>
+
+# Prevent directory listing
+Options -Indexes
+
+# Protect database files
+<FilesMatch "\.(sql|db|sqlite)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Disable server signature
+ServerSignature Off
+
+# PHP security settings
+<IfModule mod_php.c>
+    php_flag display_errors Off
+    php_flag log_errors On
+    php_value error_log logs/php_errors.log
+</IfModule>
+

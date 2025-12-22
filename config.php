@@ -155,12 +155,18 @@ function getDBConnection() {
         $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
         
         if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
+            error_log("Database connection failed: " . $conn->connect_error);
+            // Don't expose database errors to users
+            header('HTTP/1.1 500 Internal Server Error');
+            die("Database connection error. Please contact the administrator.");
         }
         
         return $conn;
     } catch (Exception $e) {
-        die("Database connection error: " . $e->getMessage());
+        error_log("Database connection error: " . $e->getMessage());
+        // Don't expose database errors to users
+        header('HTTP/1.1 500 Internal Server Error');
+        die("Database connection error. Please contact the administrator.");
     }
 }
 
@@ -483,6 +489,28 @@ function isAdminLoggedIn() {
     }
     
     return isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true;
+}
+
+// CSRF Protection Functions
+function generateCSRFToken() {
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (!isset($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['csrf_token'];
+}
+
+function verifyCSRFToken($token) {
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
+}
+
+function getCSRFTokenField() {
+    return '<input type="hidden" name="csrf_token" value="' . htmlspecialchars(generateCSRFToken()) . '">';
 }
 ?>
 
